@@ -3,12 +3,16 @@ body {
     padding: 0;
 }
 
-.state_game {
+.state {
     position: relative;
     width: 100vw;
     height: 100vh;
     background-color: antiquewhite;
+    display: none;
+}
 
+.show {
+    display: inherit;
 }
 
 .table_wrapper {
@@ -16,8 +20,6 @@ body {
     height: 80vh;
     top: 10vh;
     background-color: brown;
-
-
 }
 
 .table {
@@ -31,21 +33,30 @@ body {
     top: 5vh;
     background-color: aqua;
 }
-.row{
+
+.row {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
     background-color: blue;
-
 }
+
 .cell {
     flex-grow: 1;
     background-color: chartreuse;
     border: 1px solid darkgray;
-
 }
 
-.cell.color-1{
+    .cell.color-1 {
+    }
 
+.level {
+    width: 500px;
+    height: 60px;
+    cursor: pointer;
+    text-align: center;
+    margin: 16px;
+    background-color: aliceblue;
+    display: inline-block;
 }
