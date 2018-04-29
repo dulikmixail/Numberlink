@@ -3,7 +3,8 @@ var ItemValue = function (value, _isPublic) {
     this.isPublic = _isPublic === false ? false : true;
     this.after = null;
     this.before = null;
-}
+};
+
 var Level = function (level) {
     var data = level.data;
     var _data = [];
@@ -21,7 +22,8 @@ var Level = function (level) {
     this.GetCurrentState = function () {
         return _data;
     }
-}
+};
+
 var CurrentLevel, stateElements;
 level_Init = function () {
     stateElements = document.querySelectorAll('[id^="state-"]');
@@ -29,7 +31,7 @@ level_Init = function () {
     var level_tml = levels_wrapper.innerHTML;
     levels_wrapper.innerHTML = '';
     for (var i = 0; i < Levels.length; i++) {
-        levels_wrapper.innerHTML += '<div class="level" data-level="' + i + '">level ' + (i+1) + '</div >';
+        levels_wrapper.innerHTML += '<div class="level" data-level="' + i + '">level ' + (i + 1) + '</div >';
     }
     document.querySelectorAll('[data-level]').forEach(function (v) {
         v.addEventListener('click', function () {
@@ -58,9 +60,10 @@ addClass = function (el, className) {
     else
         el.className += ' ' + className;
 };
+
 removeClass = function (el, className) {
     if (el.classList)
         el.classList.remove(className);
     else
         el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-}
+};
