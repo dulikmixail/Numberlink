@@ -3,151 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Numberlink</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
 </head>
-<body>
-<div class="state_game show">
+<body ondragstart="return false;" ondrop="return false;">
+<div class="state show" id="state-levels">
+    <div class="levels_wrapper">
+        <div class="level" data-level="0">
+            level1
+        </div>
+    </div>
+</div>
+<div class="state" id="state-game">
     <div class="table_wrapper">
-        <div class="table size-5">
-            <div class="row">
-                <div class="cell up-down color-7">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value">1</div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value">2</div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value">4</div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value">5</div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="cell left-right color-6">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell up-left color-5">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value">8</div>
-                    </div>
-                </div>
-                <div class="cell up-right color-1">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell down-left color-2">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="cell down-right color-3">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value">3</div>
-                    </div>
-                </div>
-                <div class="cell down-left color-4">
-                    <div class="value_wrapper ">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell up-right color-8">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="value_wrapper">
-                        <div class="value"></div>
-                    </div>
-                </div>
-            </div>
+        <div class="table" id="table">
         </div>
     </div>
 </div>
 
-<script src="core.js"></script>
+<script src="js/Levels.js"></script>
+<script src="js/core.js"></script>
+<script src="js/State.js"></script>
 </body>
 </html>
