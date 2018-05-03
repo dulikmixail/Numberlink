@@ -5,7 +5,8 @@ var neighbors;
 var logger = true;
 var lastSelectedCell;
 
-function log(mesage = '', obj) {
+function log(mesage, obj) {
+    mesage = mesage === undefined ? "" : mesage;
     if (logger) {
         console.log(mesage + ' ' + (obj ? JSON.stringify(obj) : ''));
     }
@@ -113,7 +114,8 @@ function deletePath(startCell) {
     rebuilField();
 }
 
-function deleteBeforePath(cell, whitResetValue = true) {
+function deleteBeforePath(cell, whitResetValue) {
+    whitResetValue = whitResetValue === undefined ? true : whitResetValue;
     var currentCell = cell;
     var afterCell = cell.before;
     cell.before = null;
@@ -127,7 +129,8 @@ function deleteBeforePath(cell, whitResetValue = true) {
     }
 }
 
-function deleteAfterPath(cell, whitResetValue = true) {
+function deleteAfterPath(cell, whitResetValue) {
+    whitResetValue = whitResetValue === undefined ? true : whitResetValue;
     var currentCell = cell;
     var afterCell = cell.after;
     cell.after = null;
@@ -267,7 +270,7 @@ function getColorClass(value) {
 
 function isNeighbor(cell, neighbors) {
     var findNeighbor = false;
-    for (let i = 0; i < neighbors.length; i++) {
+    for (var i = 0; i < neighbors.length; i++) {
         if (neighbors[i].x === cell.x && neighbors[i].y === cell.y) {
             findNeighbor = true;
         }
@@ -285,7 +288,7 @@ function findNeighbors(cell) {
         {y: cell.y + 1, x: cell.x},
         {y: cell.y - 1, x: cell.x}
     ];
-    for (let i = 0; i < possiblePath.length; i++) {
+    for (var i = 0; i < possiblePath.length; i++) {
         if (possiblePath[i].y >= 0 &&
             possiblePath[i].x >= 0 &&
             possiblePath[i].y < data.length &&
