@@ -5,7 +5,7 @@
     <title>Numberlink</title>
     <link rel="stylesheet" href="style/style.css">
 </head>
-<body ondragstart="return false;" ondrop="return false;">
+<body ondragstart="return false;" ondrop="return false;" onselectstart="return false">
 <div class="state show" id="state-levels">
     <div class="levels_wrapper">
         <div class="level" data-level="0">
@@ -19,7 +19,11 @@
         </div>
     </div>
 </div>
-
+<div class="state show" id="state-lvl_complete">
+    <div class="info_wrapper">
+        <div class="info">Level completed</div>
+    </div>
+</div>
 <script src="js/Levels.js"></script>
 <script src="js/core.js"></script>
 <script src="js/State.js"></script>

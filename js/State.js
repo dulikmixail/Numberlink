@@ -6,6 +6,14 @@ var ItemValue = function (value, _isPublic) {
     this.dom = null;
     this.y = -1;
     this.x = -1;
+    this.setValue = function (value) {
+        if(this.isPublic){
+            this.value = value;
+        }
+    };
+    this.getValue = function () {
+        return this.value;
+    }
 };
 
 var Level = function (level) {

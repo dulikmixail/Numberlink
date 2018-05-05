@@ -1,8 +1,8 @@
 var body = document.getElementsByTagName("body")[0];
 var table = document.getElementById("table");
+var lvlComplete = document.getElementById("state-lvl_complete");
 var mouseDown = false;
-var neighbors;
-var logger = true;
+var logger = false;
 var lastSelectedCell;
 
 function log(mesage, obj) {
@@ -36,6 +36,8 @@ document.querySelectorAll(".level").forEach(function (v) {
 
 function game_Init() {
     body.addEventListener("mouseup", function () {
+        autoMagnet(lastSelectedCell);
+        rebuildField();
         mouseDown = false;
         lastSelectedCell = null;
     });
@@ -43,33 +45,54 @@ function game_Init() {
     document.querySelectorAll(".value_wrapper").forEach(function (el) {
         el.addEventListener("mousedown", function () {
             var findCell = findCellByElement(el);
-            if (findCell.value !== 0 && !isCompletedPath(findCell)) {
+            if (findCell.value !== 0) {
                 mouseDown = true;
-                lastSelectedCell = findCellByElement(el);
-                if (!lastSelectedCell.isPublic) {
-                    removeClass(el, "disabled");
-                }
-                deleteBeforePath(findCell, false);
-                rebuilField();
-            }
-        });
-        el.addEventListener("mouseout", function () {
-            if (mouseDown) {
+                lastSelectedCell = findCell;
+                deleteAfterPath(findCell);
+                rebuildField();
+                removeClass(findCell.dom.firstChild, "disabled");
             }
         });
         el.addEventListener("mouseover", function () {
             if (mouseDown) {
                 var selectedCell = findCellByElement(el);
-                var lastCell = lastSelectedCell;
-                var currentCell = selectedCell;
-                findLocking(lastCell, currentCell);
-                if ((isNeighbor(selectedCell, findNeighbors(lastSelectedCell)) || (isEndPath(lastCell, currentCell)))) {
-                    selectedCell.after = lastSelectedCell;
-                    selectedCell.value = lastSelectedCell.value;
-                    lastSelectedCell.before = selectedCell;
-                    lastSelectedCell = selectedCell;
+                var _isEndPath = isEndPath(lastSelectedCell, selectedCell);
+                if (isNeighbor(selectedCell, findNeighbors(lastSelectedCell)) ||
+                    _isEndPath ||
+                    isStartPath(lastSelectedCell, selectedCell)) {
+                    //при переходе на другой цвет для не Public поля
+                    if (selectedCell.before !== null && selectedCell.before.value !== lastSelectedCell.value) {
+                        deleteAfterPath(selectedCell);
+                        selectedCell.before.after = null;
+                        selectedCell.after = null;
+                    }
+                    //когда возвращаемся по томуже цвету обратно
+                    if (selectedCell.value === lastSelectedCell.value && !_isEndPath) {
+                        var step1 = new StepToPath(selectedCell);
+                        var step2 = new StepToPath(lastSelectedCell);
+                        //при попадании на другой путь с одинаковым цветом
+                        if (lastSelectedCell.before !== selectedCell &&
+                            step1.getStartCell() !== step2.getStartCell()) {
+                            deleteAfterPath(selectedCell);
+                            connectTwoPaths(lastSelectedCell, selectedCell)
+                            mouseDown = false;
+                        } else {
+                            deleteAfterPath(selectedCell);
+                            lastSelectedCell = selectedCell;
+                        }
+                    } else {
+                        //когда двигаемся по пустым ячекам
+                        // и при движении в обрачном напреавдении,
+                        // когда мышь наводиться на Public поле
+                        deleteAfterPath(selectedCell);
+                        selectedCell.before = lastSelectedCell;
+                        selectedCell.setValue(lastSelectedCell.value);
+                        lastSelectedCell.after = selectedCell;
+                        lastSelectedCell = selectedCell;
+                    }
+
                 }
-                rebuilField();
+                rebuildField();
             }
         });
         el.addEventListener("click", function () {
@@ -80,14 +103,44 @@ function game_Init() {
     });
 }
 
+function connectTwoPaths(lastCell, currentCell) {
+    reversePath(currentCell);
+    currentCell.before = lastCell;
+    lastCell.after = currentCell;
+}
+
+function reversePath(cell) {
+    var step = new StepToPath(cell);
+    var startCell = step.getAndGoToEndCell();
+    var buffer, currentCell;
+    while (step.hasNextBeforeCell()) {
+        currentCell = step.nextBeforeCell();
+        buffer = currentCell.after;
+        currentCell.after = currentCell.before;
+        currentCell.before = buffer;
+    }
+}
+
 function isEndPath(lastCell, currentCell) {
-    if (lastCell.isPublic && lastCell.value === currentCell.value) {
-        removeClass(currentCell.dom.firstChild, "disabled");
+    if (lastCell.isPublic &&
+        lastCell.value === currentCell.value &&
+        !currentCell.isPublic &&
+        currentCell.after === null &&
+        isNeighbor(currentCell, findNeighbors(lastCell, true))) {
+        // removeClass(currentCell.dom.firstChild, "disabled");
         mouseDown = false;
         return true;
     } else {
         return false;
     }
+}
+
+function isStartPath(lastCell, currentCell) {
+    var step = new StepToPath(lastCell);
+    var step2 = new StepToPath(currentCell);
+    var a = step.getStartCell();
+    var b = step2.getStartCell();
+    return a === b;
 }
 
 function isCompletedPath(cell) {
@@ -97,171 +150,239 @@ function isCompletedPath(cell) {
     return (!startCell.isPublic && !endCell.isPublic && startCell.value === endCell.value && startCell !== endCell);
 }
 
-function findLocking(lastCell, currentCell) {
-    if (currentCell.value !== 0) {
-        if (lastCell.value === currentCell.value) {
-            deleteBeforePath(currentCell, false);
-        } else {
-            deleteBeforePath(currentCell, true);
-        }
-        rebuilField();
-    }
-}
-
 function deletePath(startCell) {
     deleteAfterPath(startCell);
     deleteBeforePath(startCell);
-    rebuilField();
-}
-
-function deleteBeforePath(cell, whitResetValue) {
-    whitResetValue = whitResetValue === undefined ? true : whitResetValue;
-    var currentCell = cell;
-    var afterCell = cell.before;
-    cell.before = null;
-    cell.value = cell.isPublic && whitResetValue ? 0 : cell.value;
-    while (afterCell) {
-        currentCell = afterCell;
-        afterCell = afterCell.before;
-        currentCell.after = null;
-        currentCell.before = null;
-        currentCell.value = currentCell.isPublic ? 0 : currentCell.value;
-    }
+    rebuildField();
 }
 
 function deleteAfterPath(cell, whitResetValue) {
     whitResetValue = whitResetValue === undefined ? true : whitResetValue;
-    var currentCell = cell;
-    var afterCell = cell.after;
-    cell.after = null;
-    cell.value = cell.isPublic && whitResetValue ? 0 : cell.value;
-    while (afterCell) {
-        currentCell = afterCell;
-        afterCell = afterCell.after;
-        currentCell.after = null;
-        currentCell.before = null;
-        currentCell.value = currentCell.isPublic ? 0 : currentCell.value;
+    var step = new StepToPath(cell);
+    var data = CurrentLevel.GetCurrentState();
+    while (step.hasNextAfterCell()) {
+        var next = step.nextAfterCell();
+        if (cell === next) {
+            data[next.y][next.x].after = null;
+        } else {
+            data[next.y][next.x].before = null;
+            data[next.y][next.x].after = null;
+            data[next.y][next.x].setValue(whitResetValue ? 0 : step.getCurrentCell().value);
+        }
     }
 }
 
-var StepToPath = function (startCell) {
-    var cell = startCell;
-    this.getCurrentCell = function () {
-        return cell;
-    };
-    this.nextAfterCell = function nextAfterCell() {
-        if (cell.after !== null) {
-            cell = cell.after;
-            return cell
+function deleteBeforePath(cell, whitResetValue) {
+    whitResetValue = whitResetValue === undefined ? true : whitResetValue;
+    var step = new StepToPath(cell);
+    var data = CurrentLevel.GetCurrentState();
+    while (step.hasNextBeforeCell()) {
+        var next = step.nextBeforeCell();
+        if (cell === next) {
+            data[next.y][next.x].before = null;
         } else {
-            return null;
+            data[next.y][next.x].before = null;
+            data[next.y][next.x].after = null;
+            data[next.y][next.x].setValue(whitResetValue ? 0 : step.getCurrentCell().value);
         }
+    }
+}
+
+
+var StepToPath = function (startCell) {
+    this.cell = startCell;
+    this.afterCell = startCell;
+    this.beforeCell = startCell;
+    this.getCurrentCell = function () {
+        return this.cell;
+    };
+    this.hasNextAfterCell = function () {
+        return this.afterCell !== null
+    };
+    this.hasNextBeforeCell = function () {
+        return this.beforeCell !== null
+    };
+    this.nextAfterCell = function () {
+        this.cell = this.afterCell;
+        this.afterCell = this.afterCell.after;
+        return this.cell;
     };
     this.nextBeforeCell = function () {
-        if (cell.before !== null) {
-            cell = cell.before;
-            return cell
-        } else {
-            return null;
-        }
-    };
-    this.getAndGoToStartCell = function () {
-        if (cell.after !== null) {
-            while (cell.after) {
-                cell = cell.after
-            }
-        }
-        return cell;
+        this.cell = this.beforeCell;
+        this.beforeCell = this.beforeCell.before;
+        return this.cell;
     };
     this.getAndGoToEndCell = function () {
-        if (cell.before !== null) {
-            while (cell.before) {
-                cell = cell.before
-            }
+        while (startCell) {
+            this.cell = startCell;
+            startCell = startCell.after;
         }
-        return cell;
+        return this.cell;
     };
-    this.getStartCell = function () {
-        var currentCell = cell;
-        if (currentCell.after !== null) {
-            while (currentCell.after) {
-                currentCell = currentCell.after
-            }
+    this.getAndGoToStartCell = function () {
+        while (startCell) {
+            this.cell = startCell;
+            startCell = startCell.before;
+        }
+        return this.cell;
+    };
+    this.getEndCell = function () {
+        var currentCell = this.cell;
+        while (currentCell.after) {
+            currentCell = currentCell.after
         }
         return currentCell;
     };
-    this.getEndCell = function () {
-        var currentCell = cell;
-        if (currentCell.before !== null) {
-            while (currentCell.before) {
-                currentCell = currentCell.before;
-            }
+    this.getStartCell = function () {
+        var currentCell = this.cell;
+        while (currentCell.before) {
+            currentCell = currentCell.before;
         }
         return currentCell;
     }
 };
 
-
-function rebuilField() {
-    buildPath();
-
-    function buildPath() {
-        log("START buildPath");
-        var data = CurrentLevel.GetCurrentState();
-        CurrentLevel.GetCurrentState().forEach(function (row) {
-            row.forEach(function (cell) {
-                if (cell.isPublic) {
-                    if (cell.after && cell.before) {
-                        if ((cell.after.y + 1 === cell.y && cell.y === cell.before.y - 1 && cell.after.x === cell.x && cell.x === cell.before.x) ||
-                            (cell.after.y - 1 === cell.y && cell.y === cell.before.y + 1 && cell.after.x === cell.x && cell.x === cell.before.x)) {
-                            addDirection(cell, "d_up-down");
-                        } else if (cell.after.y === cell.y && cell.y === cell.before.y && cell.after.x + 1 === cell.x && cell.x === cell.before.x - 1 ||
-                            cell.after.y === cell.y && cell.y === cell.before.y && cell.after.x - 1 === cell.x && cell.x === cell.before.x + 1) {
-                            addDirection(cell, "d_left-right");
-                        } else if (cell.after.y + 1 === cell.y && cell.y === cell.before.y && cell.after.x === cell.x && cell.x === cell.before.x + 1 ||
-                            cell.after.y === cell.y && cell.y === cell.before.y + 1 && cell.after.x + 1 === cell.x && cell.x === cell.before.x) {
-                            addDirection(cell, "d_up-left");
-                        } else if (cell.after.y + 1 === cell.y && cell.y === cell.before.y && cell.after.x === cell.x && cell.x === cell.before.x - 1 ||
-                            cell.after.y === cell.y && cell.y === cell.before.y + 1 && cell.after.x - 1 === cell.x && cell.x === cell.before.x) {
-                            addDirection(cell, "d_up-right");
-                        } else if ((cell.after.y - 1 === cell.y && cell.y === cell.before.y && cell.after.x === cell.x && cell.x === cell.before.x + 1) ||
-                            (cell.after.y === cell.y && cell.y === cell.before.y - 1 && cell.after.x + 1 === cell.x && cell.x === cell.before.x)) {
-                            addDirection(cell, "d_down-left");
-                        } else if ((cell.after.y - 1 === cell.y && cell.y === cell.before.y && cell.after.x === cell.x && cell.x === cell.before.x - 1) ||
-                            (cell.after.y === cell.y && cell.y === cell.before.y - 1 && cell.after.x - 1 === cell.x && cell.x === cell.before.x)) {
-                            addDirection(cell, "d_down-right");
-                        }
-                    } else if (cell.after && cell.before === null) {
-                        if (cell.after.y - 1 === cell.y && cell.after.x === cell.x ||
-                            cell.after.y + 1 === cell.y && cell.after.x === cell.x) {
-                            addDirection(cell, "d_up-down");
-                        } else if (cell.after.y === cell.y && cell.after.x - 1 === cell.x ||
-                            cell.after.y === cell.y && cell.after.x + 1 === cell.x) {
-                            addDirection(cell, "d_left-right");
-                        }
-                    } else if (cell.before && cell.after === null) {
-                        if (cell.before.y - 1 === cell.y && cell.before.x === cell.x ||
-                            cell.before.y + 1 === cell.y && cell.before.x === cell.x) {
-                            addDirection(cell, "d_up-down");
-                        } else if (cell.before.y === cell.y && cell.before.x - 1 === cell.x ||
-                            cell.before.y === cell.y && cell.before.x + 1 === cell.x) {
-                            addDirection(cell, "d_left-right");
-                        }
-                    } else {
-                        removeClassByStartName(cell, "d_");
-                        removeClassByStartName(cell, "color");
-                    }
-                }
-            })
-        });
-        log("END buildPath");
+function deleteLocking(cell) {
+    if (cell.before && cell.after) {
+        var counterOut = 0;
+        var currentCell = cell;
+        var findLocking = false;
+        while (currentCell) {
+            currentCell = currentCell.after;
+            if (currentCell === cell) {
+                currentCell = null;
+                findLocking = true;
+            }
+        }
+        if (findLocking) {
+            deletePath(cell);
+            mouseDown = false;
+            lastSelectedCell = null;
+        }
     }
 }
 
-function addDirection(cell, className) {
-    removeClassByStartName(cell, "d_");
-    addClass(cell.dom, className);
-    addClass(cell.dom, getColorClass(cell.value));
+function rebuildField(withAutoMagnet) {
+    var notFoundedZeroValue = true;
+    var allWayFound = true;
+
+    withAutoMagnet = withAutoMagnet === undefined ? false : withAutoMagnet;
+    CurrentLevel.GetCurrentState().forEach(function (row) {
+        row.forEach(function (cell) {
+
+            // if (withAutoMagnet) {
+            //     autoMagnet(cell);
+            // }
+            if (cell.isPublic) {
+                buildPublicCell(cell)
+            } else {
+                buildNotPublicCell(cell)
+            }
+
+            if (!cell.isPublic) {
+                if (!isCompletedPath(cell)) {
+                    allWayFound = false;
+                }
+            }
+            if (cell.value === 0) {
+                notFoundedZeroValue = false;
+            }
+
+            // deleteLocking(cell);
+        })
+    });
+
+    if (allWayFound && allWayFound) {
+        var stateElements = document.querySelectorAll('[id^="state-"]');
+        stateElements.forEach(function (el) {
+            removeClass(el, "show");
+        });
+        addClass(lvlComplete, "show")
+    }
+
+    function buildPublicCell(cell) {
+        if (cell.before === null && cell.after === null) {
+            cell.setValue(0);
+        }
+        if (cell.after && cell.before) {
+            if ((cell.after.y + 1 === cell.y && cell.y === cell.before.y - 1 && cell.after.x === cell.x && cell.x === cell.before.x) ||
+                (cell.after.y - 1 === cell.y && cell.y === cell.before.y + 1 && cell.after.x === cell.x && cell.x === cell.before.x)) {
+                addDirection(cell, "d_up-down");
+            } else if (cell.after.y === cell.y && cell.y === cell.before.y && cell.after.x + 1 === cell.x && cell.x === cell.before.x - 1 ||
+                cell.after.y === cell.y && cell.y === cell.before.y && cell.after.x - 1 === cell.x && cell.x === cell.before.x + 1) {
+                addDirection(cell, "d_left-right");
+            } else if (cell.after.y + 1 === cell.y && cell.y === cell.before.y && cell.after.x === cell.x && cell.x === cell.before.x + 1 ||
+                cell.after.y === cell.y && cell.y === cell.before.y + 1 && cell.after.x + 1 === cell.x && cell.x === cell.before.x) {
+                addDirection(cell, "d_up-left");
+            } else if (cell.after.y + 1 === cell.y && cell.y === cell.before.y && cell.after.x === cell.x && cell.x === cell.before.x - 1 ||
+                cell.after.y === cell.y && cell.y === cell.before.y + 1 && cell.after.x - 1 === cell.x && cell.x === cell.before.x) {
+                addDirection(cell, "d_up-right");
+            } else if ((cell.after.y - 1 === cell.y && cell.y === cell.before.y && cell.after.x === cell.x && cell.x === cell.before.x + 1) ||
+                (cell.after.y === cell.y && cell.y === cell.before.y - 1 && cell.after.x + 1 === cell.x && cell.x === cell.before.x)) {
+                addDirection(cell, "d_down-left");
+            } else if ((cell.after.y - 1 === cell.y && cell.y === cell.before.y && cell.after.x === cell.x && cell.x === cell.before.x - 1) ||
+                (cell.after.y === cell.y && cell.y === cell.before.y - 1 && cell.after.x - 1 === cell.x && cell.x === cell.before.x)) {
+                addDirection(cell, "d_down-right");
+            }
+        } else if (cell.after && cell.before === null) {
+            if (cell.after.y - 1 === cell.y && cell.after.x === cell.x ||
+                cell.after.y + 1 === cell.y && cell.after.x === cell.x) {
+                addDirection(cell, "d_up-down");
+            } else if (cell.after.y === cell.y && cell.after.x - 1 === cell.x ||
+                cell.after.y === cell.y && cell.after.x + 1 === cell.x) {
+                addDirection(cell, "d_left-right");
+            }
+        } else if (cell.before && cell.after === null) {
+            if (cell.before.y - 1 === cell.y && cell.before.x === cell.x ||
+                cell.before.y + 1 === cell.y && cell.before.x === cell.x) {
+                addDirection(cell, "d_up-down");
+            } else if (cell.before.y === cell.y && cell.before.x - 1 === cell.x ||
+                cell.before.y === cell.y && cell.before.x + 1 === cell.x) {
+                addDirection(cell, "d_left-right");
+            }
+        } else {
+            removeClassByStartName(cell, "d_");
+            removeClassByStartName(cell, "color");
+        }
+    }
+
+    function buildNotPublicCell(cell) {
+        if (cell.before || cell.after) {
+            removeClass(cell.dom.firstChild, "disabled");
+        } else {
+            removeClass(cell.dom.firstChild, "disabled");
+            addClass(cell.dom.firstChild, "disabled");
+        }
+    }
+
+    function addDirection(cell, className) {
+        removeClassByStartName(cell, "d_");
+        addClass(cell.dom, className);
+        addClass(cell.dom, getColorClass(cell.value));
+    }
+
+}
+
+function autoMagnet(cell) {
+    if (cell.isPublic) {
+        var neighbors = findNeighbors(cell, true);
+        var neighbor;
+        var data = CurrentLevel.GetCurrentState();
+        for (var i = 0; i < neighbors.length; i++) {
+            neighbor = data[neighbors[i].y][neighbors[i].x];
+            if (neighbor.value === cell.value &&
+                neighbor !== cell.before &&
+                neighbor.after === null &&
+                cell.value !== 0
+            ) {
+                var step1 = new StepToPath(cell);
+                var step2 = new StepToPath(neighbor);
+                if (step1.getStartCell() !== step2.getStartCell()) {
+                    connectTwoPaths(data[neighbors[i].y][neighbors[i].x], cell);
+                }
+            }
+        }
+    }
 }
 
 function getColorClass(value) {
@@ -278,8 +399,8 @@ function isNeighbor(cell, neighbors) {
     return findNeighbor;
 }
 
-
-function findNeighbors(cell) {
+function findNeighbors(cell, withNoPublicCell) {
+    withNoPublicCell = withNoPublicCell === undefined ? false : withNoPublicCell;
     var neighbors = [];
     var data = CurrentLevel.GetCurrentState();
     var possiblePath = [
@@ -293,7 +414,8 @@ function findNeighbors(cell) {
             possiblePath[i].x >= 0 &&
             possiblePath[i].y < data.length &&
             possiblePath[i].x < data.length &&
-            data[possiblePath[i].y][possiblePath[i].x].isPublic) {
+            (data[possiblePath[i].y][possiblePath[i].x].isPublic || withNoPublicCell)
+        ) {
             neighbors.push(possiblePath[i]);
         }
     }

@@ -5,7 +5,7 @@
     <title>Numberlink</title>
     <link rel="stylesheet" href="style/style.css">
 </head>
-<body>
+<body ondragstart="return false;" ondrop="return false;" onselectstart="return false">
 <div class="state_game">
     <div class="table_wrapper">
         <div class="table size-8">
@@ -348,6 +348,13 @@
         </div>
     </div>
 </div>
+
+<div class="state show" id="state-lvl_complete">
+    <div class="info_wrapper">
+        <div class="info">Level completed</div>
+    </div>
+</div>
+
 
 </body>
 </html>

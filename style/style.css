@@ -38,6 +38,21 @@ body {
     background-color: #faf5b4;
 }
 
+.info_wrapper {
+    position: relative;
+    top: 15%;
+    height: 70%;
+    background-color: #faf5b4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info_wrapper .info {
+    position: relative;
+    font-size: 8vw;
+}
+
 .table {
     position: relative;
     top: 10vh;
@@ -69,6 +84,7 @@ body {
     background-color: #ffcd00;
     position: relative;
 }
+
 .table .row .cell .value_wrapper:before {
     content: "";
     width: 100%;
@@ -164,51 +180,96 @@ body {
     right: 0;
 }
 
+.value_wrapper.color-1,
+.value_wrapper.color-2,
+.value_wrapper.color-3,
+.value_wrapper.color-4,
+.value_wrapper.color-5,
+.value_wrapper.color-6,
+.value_wrapper.color-7,
+.value_wrapper.color-8 {
+    background-size: 85%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.value_wrapper.color-1 {
+    background-image: url("../img/icon/icon1.png");
+}
+
+.value_wrapper.color-2 {
+    background-image: url("../img/icon/icon2.png");
+}
+
+.value_wrapper.color-3 {
+    background-image: url("../img/icon/icon3.png");
+}
+
+.value_wrapper.color-4 {
+    background-image: url("../img/icon/icon4.png");
+}
+
+.value_wrapper.color-5 {
+    background-image: url("../img/icon/icon5.png");
+}
+
+.value_wrapper.color-6 {
+    background-image: url("../img/icon/icon6.png");
+}
+
+.value_wrapper.color-7 {
+    background-image: url("../img/icon/icon7.png");
+}
+
+.value_wrapper.color-8 {
+    background-image: url("../img/icon/icon8.png");
+}
+
 .cell .color-1,
-.color-1:after,
-.color-1:before {
+.cell.color-1:after,
+.cell.color-1:before {
     background-color: #7cff00 !important;
 }
 
 .cell .color-2,
-.color-2:after,
-.color-2:before {
+.cell.color-2:after,
+.cell.color-2:before {
     background-color: #ff6b03 !important;
 }
 
 .cell .color-3,
-.color-3:after,
-.color-3:before {
+.cell.color-3:after,
+.cell.color-3:before {
     background-color: #ff0200 !important;
 }
 
 .cell .color-4,
-.color-4:after,
-.color-4:before {
+.cell.color-4:after,
+.cell.color-4:before {
     background-color: #ff00c4 !important;
 }
 
 .cell .color-5,
-.color-5:after,
-.color-5:before {
+.cell.color-5:after,
+.cell.color-5:before {
     background-color: #8100ff !important;
 }
 
 .cell .color-6,
-.color-6:after,
-.color-6:before {
+.cell.color-6:after,
+.cell.color-6:before {
     background-color: #0413ff !important;
 }
 
 .cell .color-7,
-.color-7:after,
-.color-7:before {
+.cell.color-7:after,
+.cell.color-7:before {
     background-color: #00ffff !important;
 }
 
 .cell .color-8,
-.color-8:after,
-.color-8:before {
+.cell.color-8:after,
+.cell.color-8:before {
     background-color: #00ff3d !important;
 }
 
