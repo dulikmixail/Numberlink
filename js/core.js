@@ -1,9 +1,24 @@
 var body = document.getElementsByTagName("body")[0];
 var table = document.getElementById("table");
-var lvlComplete = document.getElementById("state-lvl_complete");
-var mouseDown = false;
+var isMouseDown = false;
 var logger = false;
 var lastSelectedCell;
+var lastTouchElement = null;
+
+const iconMute = document.getElementsByClassName("svg-mute")[0];
+
+document.addEventListener('DOMContentLoaded', function () { // Аналог $(document).ready(function(){
+    iconMute.addEventListener("click", function () {
+        iconMute.classList.toggle("mute");
+    });
+});
+
+
+function toggleModal() {
+    document.querySelector(".modal-wrapper").classList.toggle("open", true);
+    document.querySelector("#state-game").classList.toggle("blur-it", true)
+}
+
 
 function log(mesage, obj) {
     mesage = mesage === undefined ? "" : mesage;
@@ -28,79 +43,131 @@ function launchFullScreen(element) {
     }
 }
 
-document.querySelectorAll(".level").forEach(function (v) {
-    v.addEventListener("click", function (v) {
-        launchFullScreen(body);
-    })
-});
+function clearField() {
+    CurrentLevel.GetCurrentState().forEach(function (row) {
+        row.forEach(function (cell) {
+            cell.after = null;
+            cell.before = null;
+            cell.setValue(0);
+        })
+    });
+    rebuildField();
+}
+
 
 function game_Init() {
     body.addEventListener("mouseup", function () {
-        autoMagnet(lastSelectedCell);
-        rebuildField();
-        mouseDown = false;
-        lastSelectedCell = null;
+        eUp();
+        console.log("mouseup")
     });
-
+    body.addEventListener("touchend", function (event) {
+        // event.preventDefault();
+        // event.stopPropagation();
+        eUp();
+        lastTouchElement = null;
+        console.log("touch End")
+    });
+    body.addEventListener("touchstart", function (event) {
+        var element = document.elementFromPoint(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
+        if (element.classList.contains("value_wrapper")) {
+            eDown(element);
+            lastTouchElement = element;
+        }
+        console.log("touch Start")
+    });
+    body.addEventListener("touchmove", function (event) {
+        var element = document.elementFromPoint(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
+        if (element !== lastTouchElement &&
+            element.classList.contains("value_wrapper") &&
+            lastTouchElement !== null) {
+            eOver(element);
+            lastTouchElement = element;
+        }
+        console.log("touch Move")
+    }, false);
     document.querySelectorAll(".value_wrapper").forEach(function (el) {
         el.addEventListener("mousedown", function () {
-            var findCell = findCellByElement(el);
-            if (findCell.value !== 0) {
-                mouseDown = true;
-                lastSelectedCell = findCell;
-                deleteAfterPath(findCell);
-                rebuildField();
-                removeClass(findCell.dom.firstChild, "disabled");
-            }
+            eDown(el);
+            console.log("mouse Down")
+
         });
         el.addEventListener("mouseover", function () {
-            if (mouseDown) {
-                var selectedCell = findCellByElement(el);
-                var _isEndPath = isEndPath(lastSelectedCell, selectedCell);
-                if (isNeighbor(selectedCell, findNeighbors(lastSelectedCell)) ||
-                    _isEndPath ||
-                    isStartPath(lastSelectedCell, selectedCell)) {
-                    //при переходе на другой цвет для не Public поля
-                    if (selectedCell.before !== null && selectedCell.before.value !== lastSelectedCell.value) {
-                        deleteAfterPath(selectedCell);
-                        selectedCell.before.after = null;
-                        selectedCell.after = null;
-                    }
-                    //когда возвращаемся по томуже цвету обратно
-                    if (selectedCell.value === lastSelectedCell.value && !_isEndPath) {
-                        var step1 = new StepToPath(selectedCell);
-                        var step2 = new StepToPath(lastSelectedCell);
-                        //при попадании на другой путь с одинаковым цветом
-                        if (lastSelectedCell.before !== selectedCell &&
-                            step1.getStartCell() !== step2.getStartCell()) {
-                            deleteAfterPath(selectedCell);
-                            connectTwoPaths(lastSelectedCell, selectedCell)
-                            mouseDown = false;
-                        } else {
-                            deleteAfterPath(selectedCell);
-                            lastSelectedCell = selectedCell;
-                        }
-                    } else {
-                        //когда двигаемся по пустым ячекам
-                        // и при движении в обрачном напреавдении,
-                        // когда мышь наводиться на Public поле
-                        deleteAfterPath(selectedCell);
-                        selectedCell.before = lastSelectedCell;
-                        selectedCell.setValue(lastSelectedCell.value);
-                        lastSelectedCell.after = selectedCell;
-                        lastSelectedCell = selectedCell;
-                    }
+            eOver(el);
+            console.log("mouse Over");
 
-                }
-                rebuildField();
-            }
         });
         el.addEventListener("click", function () {
-            var cell = findCellByElement(el);
-            deletePath(cell);
-            log("One click");
+            eClick(el);
+            console.log("click");
         });
     });
+}
+
+function eUp(el) {
+    autoMagnet(lastSelectedCell);
+    rebuildField();
+    isMouseDown = false;
+    lastSelectedCell = null;
+}
+
+function eDown(el) {
+    var findCell = findCellByElement(el);
+    if (findCell.value !== 0) {
+        isMouseDown = true;
+        lastSelectedCell = findCell;
+        deleteAfterPath(findCell);
+        rebuildField();
+        removeClass(findCell.dom.firstChild, "disabled");
+    }
+}
+
+function eOver(el) {
+    if (isMouseDown) {
+        var selectedCell = findCellByElement(el);
+        var _isEndPath = isEndPath(lastSelectedCell, selectedCell);
+        if (isNeighbor(selectedCell, findNeighbors(lastSelectedCell)) ||
+            _isEndPath ||
+            isStartPath(lastSelectedCell, selectedCell)) {
+            //при переходе на другой цвет для не Public поля
+            if (selectedCell.before !== null && selectedCell.before.value !== lastSelectedCell.value) {
+                deleteAfterPath(selectedCell);
+                selectedCell.before.after = null;
+                selectedCell.after = null;
+            }
+            //когда возвращаемся по томуже цвету обратно
+            if (selectedCell.value === lastSelectedCell.value && !_isEndPath) {
+                var step1 = new StepToPath(selectedCell);
+                var step2 = new StepToPath(lastSelectedCell);
+                //при попадании на другой путь с одинаковым цветом
+                if (lastSelectedCell.before !== selectedCell &&
+                    step1.getStartCell() !== step2.getStartCell()) {
+                    deleteAfterPath(selectedCell);
+                    connectTwoPaths(lastSelectedCell, selectedCell)
+                    isMouseDown = false;
+                } else {
+                    deleteAfterPath(selectedCell);
+                    lastSelectedCell = selectedCell;
+                }
+            } else {
+                //когда двигаемся по пустым ячекам
+                // и при движении в обрачном напреавдении,
+                // когда мышь наводиться на Public поле
+                deleteAfterPath(selectedCell);
+                selectedCell.before = lastSelectedCell;
+                selectedCell.setValue(lastSelectedCell.value);
+                lastSelectedCell.after = selectedCell;
+                lastSelectedCell = selectedCell;
+            }
+
+        }
+        rebuildField();
+    }
+}
+
+function eClick(el) {
+    var cell = findCellByElement(el);
+    deletePath(cell);
+    log("One click");
 }
 
 function connectTwoPaths(lastCell, currentCell) {
@@ -128,7 +195,7 @@ function isEndPath(lastCell, currentCell) {
         currentCell.after === null &&
         isNeighbor(currentCell, findNeighbors(lastCell, true))) {
         // removeClass(currentCell.dom.firstChild, "disabled");
-        mouseDown = false;
+        isMouseDown = false;
         return true;
     } else {
         return false;
@@ -256,7 +323,7 @@ function deleteLocking(cell) {
         }
         if (findLocking) {
             deletePath(cell);
-            mouseDown = false;
+            isMouseDown = false;
             lastSelectedCell = null;
         }
     }
@@ -297,7 +364,9 @@ function rebuildField(withAutoMagnet) {
         stateElements.forEach(function (el) {
             removeClass(el, "show");
         });
-        addClass(lvlComplete, "show")
+        addClass(document.getElementById("state-game"), "show");
+        addClass(document.getElementById("state-lvl_complete"), "show");
+        toggleModal();
     }
 
     function buildPublicCell(cell) {
@@ -364,7 +433,7 @@ function rebuildField(withAutoMagnet) {
 }
 
 function autoMagnet(cell) {
-    if (cell.isPublic) {
+    if (cell !== undefined && cell !== null && cell.isPublic) {
         var neighbors = findNeighbors(cell, true);
         var neighbor;
         var data = CurrentLevel.GetCurrentState();

@@ -1,3 +1,57 @@
+var startGameBtn = document.getElementById("start-game");
+startGameBtn.addEventListener("click", function () {
+    var states = new States();
+    states.showState("state-levels");
+});
+
+var backBtn = document.getElementById("btn_back");
+var fullBtn = document.getElementById("btn_full");
+var clearBtn = document.getElementById("btn_clear");
+
+
+document.addEventListener('DOMContentLoaded', function () { // Аналог $(document).ready(function(){
+    backBtn.addEventListener("click", function () {
+        var states = new States();
+        states.showState("state-levels");
+    });
+    fullBtn.addEventListener("click", function () {
+        launchFullScreen(body);
+    });
+    clearBtn.addEventListener("click", function () {
+        clearField();
+    })
+});
+
+startGameBtn.addEventListener("click", function () {
+    var states = new States();
+    states.showState("state-levels");
+});
+
+var States = function () {
+    this.states = document.querySelectorAll(".state");
+    this.getStateById = function (id) {
+        var findState = null;
+        this.states.forEach(function (state) {
+            if (state.getAttribute("id") === id) {
+                findState = state;
+            }
+        });
+        return findState;
+    };
+    this.hideAllState = function () {
+        this.states.forEach(function (state) {
+            removeClass(state, "show");
+        })
+    };
+    this.showState = function (id) {
+        var state = this.getStateById(id);
+        if (state !== null) {
+            this.hideAllState();
+            addClass(state, "show");
+        }
+    }
+};
+
 var ItemValue = function (value, _isPublic) {
     this.value = value || 0;
     this.isPublic = _isPublic === false ? false : true;
@@ -7,7 +61,7 @@ var ItemValue = function (value, _isPublic) {
     this.y = -1;
     this.x = -1;
     this.setValue = function (value) {
-        if(this.isPublic){
+        if (this.isPublic) {
             this.value = value;
         }
     };
@@ -47,7 +101,7 @@ level_Init = function () {
     var level_tml = levels_wrapper.innerHTML;
     levels_wrapper.innerHTML = '';
     for (var i = 0; i < Levels.length; i++) {
-        levels_wrapper.innerHTML += '<div class="level" data-level="' + i + '">level ' + (i + 1) + '</div >';
+        levels_wrapper.innerHTML += '<div class="level" data-level="' + i + '"><button class="spin">level ' + (i + 1) + '</button></div >';
     }
     document.querySelectorAll('[data-level]').forEach(function (v) {
         v.addEventListener('click', function () {
@@ -68,7 +122,7 @@ startGame = function (level) {
     });
     loadGameField();
     game_Init();
-    log('START GAME', CurrentLevel.GetCurrentState());
+    // log('START GAME', CurrentLevel.GetCurrentState());
 };
 
 loadGameField = function (level) {
@@ -78,6 +132,7 @@ loadGameField = function (level) {
     if (lvl) {
         var table = document.getElementById("table");
         table.innerHTML = '';
+        removeClassByStartName(table, "size-");
         addClass(table, "size-" + data.length);
         for (var i = 0; i < data.length; i++) {
             row = createRow();
@@ -122,9 +177,12 @@ addClass = function (el, className) {
 };
 
 removeClassByStartName = function (cell, className) {
-    log("Class name:", cell.dom.className);
-    cell.dom.className = cell.dom.className.replace(new RegExp('(^|\\b)' + className + '.+ '.split(' ').join('|') + '(\\b|$)', 'gi'), '');
-    log("Remove class name:", cell.dom.className);
+    if (cell.dom !== undefined && cell.dom.className !== undefined) {
+        cell.dom.className = cell.dom.className.replace(new RegExp('(^|\\b)' + className + '.+ '.split(' ').join('|') + '(\\b|$)', 'gi'), '');
+    }
+    if (cell !== undefined && cell.className !== undefined) {
+        cell.className = cell.className.replace(new RegExp('(^|\\b)' + className + '.+ '.split(' ').join('|') + '(\\b|$)', 'gi'), '');
+    }
 };
 
 removeClass = function (el, className) {

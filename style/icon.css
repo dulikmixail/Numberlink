@@ -1,0 +1,201 @@
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.25em;
+}
+
+li a:link,
+li a:visited {
+    display: block;
+    border: 0;
+    padding-left: 28px;
+    color: #000000;
+}
+
+li a:hover,
+li a:focus,
+li a:active {
+    color: #ffffff;
+    background: transparent;
+}
+
+li:before,
+li:after,
+li a:before,
+li a:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+}
+
+li a:before,
+li a:after {
+    margin: -8px 0 0;
+    background: #000000;
+}
+
+li a:hover:before,
+li a:focus:before,
+li a:active:before {
+    background: #ffffff;
+}
+
+/* Not links */
+
+.player,
+.headphones,
+.ribbon,
+.views,
+.location,
+.info,
+.help,
+.pie,
+.success,
+.success-alt,
+.warning,
+.denied {
+    padding-left: 28px;
+}
+
+/* FULL SCREEN
+------------------------------------------------------------------------------------------------------------------------------- */
+
+.full:before,
+.full:after {
+    z-index: 1;
+    left: 8px;
+    width: 3px;
+    height: 8px;
+    border: 5px solid #000000;
+    border-width: 5px 0;
+    margin-top: -8px;
+    /* css3 */
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.full:after {
+    /* css3 */
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.full:hover:before,
+.full:hover:after {
+    border-color: #ffffff;
+}
+
+.full a:before,
+.full a:after {
+    z-index: 10;
+    width: 4px;
+    height: 0;
+    border-width: 0 7px 7px;
+    border-style: solid;
+    border-color: transparent #000000;
+    margin-top: -8px;
+    background: transparent;
+}
+
+.full a:after {
+    border-width: 7px 7px 0;
+    margin-top: 3px;
+}
+
+.full a:hover:before,
+.full a:focus:before,
+.full a:active:before,
+.full a:hover:after,
+.full a:focus:after,
+.full a:active:after {
+    border-color: transparent #ffffff;
+    background: transparent;
+}
+
+/* SHRINK
+------------------------------------------------------------------------------------------------------------------------------- */
+
+.exit:before,
+.exit:after {
+    z-index: 1;
+    top: 50%;
+    left: 8px;
+    width: 3px;
+    height: 14px;
+    border: 5px solid #000000;
+    border-width: 5px 0;
+    margin-top: -12px;
+    /* css3 */
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.exit:after {
+    /* css3 */
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.exit:hover:before,
+.exit:hover:after {
+    border-color: #ffffff;
+}
+
+.exit a:before,
+.exit a:after {
+    z-index: 10;
+    left: 2px;
+    width: 6px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #000000;
+    margin-top: -5px;
+    background: transparent;
+    /* css3 */
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.exit a:after {
+    /* css3 */
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.exit a:hover:before,
+.exit a:focus:before,
+.exit a:active:before,
+.exit a:hover:after,
+.exit a:focus:after,
+.exit a:active:after {
+    border-color: transparent #ffffff;
+    background: transparent;
+}
+

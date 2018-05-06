@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <title>Numberlink</title>
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/levels.css">
 </head>
-<body>
-<div class="state show" id="state-game">
+<body ondragstart="return false;" ondrop="return false;" onselectstart="return false">
+<div class="state" id="state-main">
+    <div class="wrapper main-wrapper">
+        <div class="container">
+            <a class="btn" href="#" id="start-game">Start game</a>
+        </div>
+    </div>
+</div>
+<div class="state show" id="state-levels">
+    <div class="wrapper levels_wrapper">
+        <button class="spin">Spin</button>
+    </div>
+</div>
+<div class="state" id="state-game">
     <div class="table_wrapper">
         <div class="table size-5">
             <div class="row">
@@ -145,6 +158,12 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="state" id="state-lvl_complete">
+    <div class="info_wrapper">
+        <div class="info">Level completed</div>
     </div>
 </div>
 

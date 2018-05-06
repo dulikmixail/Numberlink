@@ -1,0 +1,74 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+
+.blur-it {
+    filter: blur(2px);
+}
+
+.modal-wrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0);
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.25s ease-in-out;
+}
+
+.modal-wrapper.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    width: 50%;
+    height: 60%;
+    min-width: 50vh;
+    top: 20%;
+    display: block;
+    margin: auto;
+    position: relative;
+    background: #fff;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+.modal-wrapper.open .modal {
+    opacity: 0.9;
+}
+
+.head {
+    width: 100%;
+    height: 6%;
+    overflow: hidden;
+    background: #d0a000;
+}
+
+.btn-close {
+    font-size: 28px;
+    display: block;
+    float: right;
+    color: #fff;
+}
+
+.content {
+    padding: 10%;
+}
+
+.good-job {
+    text-align: center;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    color: #ffcd00;
+}
+
+.good-job .fa-thumbs-o-up {
+    display: block;
+    font-size: 8vh;
+    height: 10vh;
+    content: "";
+    background: url(../img/svg/thumbs-up.svg) no-repeat center;
+}
+.good-job h1 {
+    font-size: 6vh;
+}
