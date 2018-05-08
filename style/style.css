@@ -28,9 +28,17 @@ body {
 .wrapper.levels_wrapper {
     flex-wrap: wrap;
     justify-content: space-around;
+    align-content: space-around;
     align-items: stretch;
-    height: 100%;
-    min-height: 80vh;
+}
+
+.wrapper .level {
+    text-align: center;
+    font-size: 3vw;
+    display: block;
+    width: 15vw;
+    height: 15vh;
+    margin: 2vh 1vw;
 }
 
 .wrapper.table_wrapper {
@@ -41,17 +49,17 @@ body {
     align-items: stretch;
     align-content: space-between;
     position: relative;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     display: none;
 }
 
-#state-levels {
-    height: 100%;
-}
-#state-levels .navigate_panel {
-    height: 10vh;
-}
+/*#state-levels {*/
+/*height: 100%;*/
+/*}*/
+/*#state-levels .navigate_panel {*/
+/*height: 10vh;*/
+/*}*/
 
 #state-lvl_complete {
     position: fixed;
@@ -61,6 +69,7 @@ body {
 }
 
 .navigate_panel {
+    font-size: 4vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,6 +159,17 @@ body {
     height: 100%;
     box-sizing: border-box;
     font-size: 8vh;
+}
+
+.table .row .cell.screamer:after{
+    display: block;
+    position: absolute;
+    content: '';
+    top: 5%;
+    height: 90%;
+    width: 100%;
+    z-index: 1;
+    background: url("../img/svg/screamer.svg");
 }
 
 .table .row .cell .value_wrapper {

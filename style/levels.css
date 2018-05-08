@@ -1,15 +1,17 @@
 button {
-    background: none;
+    background: 0;
     border: 0;
-    box-sizing: border-box;
-    margin: 1em;
-    padding: 1em 2em;
-    box-shadow: inset 0 0 0 2px #f45e61;
-    color: #f45e61;
-    font-size: inherit;
-    font-weight: 700;
+    /*box-sizing: border-box;*/
+    /* margin: 1em; */
+    /* padding: 1em 2em; */
+    box-shadow: inset 0 0 0 0.5vh #767f8d;
+    color: #474b55;
+    font-size: calc((3vh + 2vw) - 0.4 * (3vh + 2vw));
+    font-weight: 500;
     position: relative;
     vertical-align: middle;
+    width: 100%;
+    height: 100%;
 }
 
 button::before, button::after {
@@ -62,7 +64,7 @@ button::before, button::after {
 }
 
 .meet:hover {
-    color: #fbca67;
+    color: #ffcd00;
 }
 
 .meet::after {
@@ -71,13 +73,13 @@ button::before, button::after {
 }
 
 .meet:hover::before {
-    border-top-color: #fbca67;
-    border-right-color: #fbca67;
+    border-top-color: #ffcd00;
+    border-right-color: #ffcd00;
 }
 
 .meet:hover::after {
-    border-bottom-color: #fbca67;
-    border-left-color: #fbca67;
+    border-bottom-color: #ffcd00;
+    border-left-color: #ffcd00;
     transition: height 0.25s ease-out, width 0.25s ease-out 0.25s;
 }
 
@@ -167,7 +169,7 @@ button::before, button::after {
 }
 
 .thick {
-    color: #f45e61;
+    color: #474b55;
 }
 
 .thick:hover {
@@ -186,25 +188,18 @@ button::before, button::after {
 }
 
 .thick:hover::before {
-    background: #f45e61;
-    border-top-color: #f45e61;
-    border-right-color: #f45e61;
-    border-bottom-color: #f45e61;
+    background: #474b55;
+    border-top-color: #474b55;
+    border-right-color: #474b55;
+    border-bottom-color: #474b55;
     transition: background 0s linear 0.4s, border-top-color 0.15s linear, border-right-color 0.15s linear 0.15s, border-bottom-color 0.15s linear 0.25s;
 }
 
 .thick:hover::after {
-    border-top: 2.5em solid #f45e61;
+    border-top: 2.5em solid #474b55;
     border-left-width: 2.5em;
     border-right-width: 2.5em;
 }
-
-/* Page styling */
-/*body {*/
-
-    /*font: 300 24px/1.5 Lato, sans-serif;*/
-
-/*}*/
 
 .buttons {
     isolation: isolate;

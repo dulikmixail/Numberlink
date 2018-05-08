@@ -70,7 +70,40 @@ var ItemValue = function (value, _isPublic) {
     }
 };
 
-var Level = function (level) {
+var LoadProperties = function () {
+    function processData(data) {
+        // alert(data);
+    }
+
+    function handler() {
+        if (this.readyState === 4 && this.status === 200) {
+            processData(this.responseText);
+        } else {
+            alert('Game initialization error (' + this.status + ': ' + this.statusText + ')');
+        }
+    }
+
+    var client = new XMLHttpRequest();
+    client.onload = handler;
+    client.open('GET', 'json/init.json', true);
+    client.send();
+};
+
+var gameStorage = new function (number) {
+    var numberCurrentLevel = number;
+    var levels = [];
+    localStorage.setItem("levels", levels);
+    this.dateSave = null;
+    this.setLevel = function (level) {
+    };
+    this.save = function () {
+        localStorage.setItem("levels")
+
+    }
+};
+
+
+var Level = function (level, number) {
     var data = level.data;
     var _data = [];
     for (var i = 0; i < level.size; i++) {
@@ -91,29 +124,31 @@ var Level = function (level) {
 
     this.GetCurrentState = function () {
         return _data;
-    }
+    };
+    this.number = number;
 };
 
 var CurrentLevel, stateElements;
 level_Init = function () {
+    loadProperties();
     stateElements = document.querySelectorAll('[id^="state-"]');
     var levels_wrapper = document.querySelector('.levels_wrapper');
     var level_tml = levels_wrapper.innerHTML;
     levels_wrapper.innerHTML = '';
     for (var i = 0; i < Levels.length; i++) {
-        levels_wrapper.innerHTML += '<div class="level" data-level="' + i + '"><button class="spin">level ' + (i + 1) + '</button></div >';
+        levels_wrapper.innerHTML += '<div class="level" data-level="' + i + '"><button class="draw meet">Level ' + (i + 1) + '</button></div >';
     }
     document.querySelectorAll('[data-level]').forEach(function (v) {
         v.addEventListener('click', function () {
             var number = +this.getAttribute('data-level');
             log("changed level:", number);
-            startGame(Levels[number]);
+            startGame(Levels[number], number);
         })
     });
 };
 
 startGame = function (level) {
-    CurrentLevel = new Level(level);
+    CurrentLevel = new Level(level, number);
     stateElements.forEach(function (v) {
         if (v.id == 'state-game')
             addClass(v, 'show');
@@ -122,7 +157,6 @@ startGame = function (level) {
     });
     loadGameField();
     game_Init();
-    // log('START GAME', CurrentLevel.GetCurrentState());
 };
 
 loadGameField = function (level) {

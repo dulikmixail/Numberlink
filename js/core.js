@@ -5,6 +5,7 @@ var logger = false;
 var lastSelectedCell;
 var lastTouchElement = null;
 
+
 const iconMute = document.getElementsByClassName("svg-mute")[0];
 
 document.addEventListener('DOMContentLoaded', function () { // Аналог $(document).ready(function(){
@@ -54,18 +55,13 @@ function clearField() {
     rebuildField();
 }
 
-
 function game_Init() {
     body.addEventListener("mouseup", function () {
         eUp();
-        console.log("mouseup")
     });
     body.addEventListener("touchend", function (event) {
-        // event.preventDefault();
-        // event.stopPropagation();
         eUp();
         lastTouchElement = null;
-        console.log("touch End")
     });
     body.addEventListener("touchstart", function (event) {
         var element = document.elementFromPoint(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
@@ -73,7 +69,6 @@ function game_Init() {
             eDown(element);
             lastTouchElement = element;
         }
-        console.log("touch Start")
     });
     body.addEventListener("touchmove", function (event) {
         var element = document.elementFromPoint(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
@@ -83,25 +78,23 @@ function game_Init() {
             eOver(element);
             lastTouchElement = element;
         }
-        console.log("touch Move")
     }, false);
     document.querySelectorAll(".value_wrapper").forEach(function (el) {
         el.addEventListener("mousedown", function () {
             eDown(el);
-            console.log("mouse Down")
-
         });
         el.addEventListener("mouseover", function () {
             eOver(el);
-            console.log("mouse Over");
-
         });
         el.addEventListener("click", function () {
             eClick(el);
-            console.log("click");
         });
     });
 }
+
+
+
+
 
 function eUp(el) {
     autoMagnet(lastSelectedCell);
@@ -111,8 +104,12 @@ function eUp(el) {
 }
 
 function eDown(el) {
+    if(screamerCells.haveScreamer()){
+        screamerCells.hide();
+        screamerCells.clear();
+    }
     var findCell = findCellByElement(el);
-    if (findCell.value !== 0) {
+    if (findCell.value !== 0 && !isCompletedPath(findCell)) {
         isMouseDown = true;
         lastSelectedCell = findCell;
         deleteAfterPath(findCell);
@@ -165,6 +162,10 @@ function eOver(el) {
 }
 
 function eClick(el) {
+    if(screamerCells.haveScreamer()){
+        screamerCells.hide();
+        screamerCells.clear();
+    }
     var cell = findCellByElement(el);
     deletePath(cell);
     log("One click");
@@ -201,6 +202,40 @@ function isEndPath(lastCell, currentCell) {
         return false;
     }
 }
+
+var ScreamerCells = function () {
+    this.screamers = [];
+    this.haveScreamer = function () {
+        return this.screamers.length !== 0;
+    };
+    this.clear = function () {
+        this.screamers = [];
+    };
+    this.checked = function () {
+        var screamers = [];
+        CurrentLevel.GetCurrentState().forEach(function (row) {
+            row.forEach(function (cell) {
+                if (cell.value === 0) {
+                    screamers.push(cell);
+                }
+            })
+        });
+        this.screamers = screamers;
+    };
+    this.show = function () {
+        this.screamers.forEach(function (screamer) {
+            removeClass(screamer.dom, "screamer");
+            addClass(screamer.dom, "screamer");
+        });
+    };
+    this.hide = function hideScreamerCell() {
+        this.screamers.forEach(function (screamer) {
+            removeClass(screamer.dom, "screamer");
+        });
+    }
+};
+
+var screamerCells = new ScreamerCells();
 
 function isStartPath(lastCell, currentCell) {
     var step = new StepToPath(lastCell);
@@ -332,16 +367,10 @@ function deleteLocking(cell) {
 function rebuildField(withAutoMagnet) {
     var notFoundedZeroValue = true;
     var allWayFound = true;
-
-    withAutoMagnet = withAutoMagnet === undefined ? false : withAutoMagnet;
     CurrentLevel.GetCurrentState().forEach(function (row) {
         row.forEach(function (cell) {
-
-            // if (withAutoMagnet) {
-            //     autoMagnet(cell);
-            // }
             if (cell.isPublic) {
-                buildPublicCell(cell)
+                buildPublicCell(cell);
             } else {
                 buildNotPublicCell(cell)
             }
@@ -354,12 +383,10 @@ function rebuildField(withAutoMagnet) {
             if (cell.value === 0) {
                 notFoundedZeroValue = false;
             }
-
-            // deleteLocking(cell);
         })
     });
 
-    if (allWayFound && allWayFound) {
+    if (allWayFound && notFoundedZeroValue) {
         var stateElements = document.querySelectorAll('[id^="state-"]');
         stateElements.forEach(function (el) {
             removeClass(el, "show");
@@ -367,6 +394,11 @@ function rebuildField(withAutoMagnet) {
         addClass(document.getElementById("state-game"), "show");
         addClass(document.getElementById("state-lvl_complete"), "show");
         toggleModal();
+    } else if (allWayFound && !notFoundedZeroValue) {
+        screamerCells.checked();
+        if(screamerCells.haveScreamer()){
+            screamerCells.show()
+        }
     }
 
     function buildPublicCell(cell) {
