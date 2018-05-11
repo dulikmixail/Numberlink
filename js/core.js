@@ -401,7 +401,7 @@ function deleteLocking(cell) {
 }
 
 function rebuildField(withAutoMagnet) {
-    gameStorage.save();
+    // gameStorage.save();
     var notFoundedZeroValue = true;
     var allWayFound = true;
     CurrentLevel.GetCurrentState().forEach(function (row) {
@@ -424,7 +424,7 @@ function rebuildField(withAutoMagnet) {
     });
 
     if (allWayFound && notFoundedZeroValue) {
-        gameStorage.levelComplete();
+        // gameStorage.levelComplete();
         var stateElements = document.querySelectorAll('[id^="state-"]');
         stateElements.forEach(function (el) {
             removeClass(el, "show");
