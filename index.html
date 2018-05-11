@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Numberlink</title>
-    <link rel="stylesheet" href="style/fonts.css?w9">
-    <link rel="stylesheet" href="style/style.css?w9">
-    <link rel="stylesheet" href="style/button.css?w9">
+    <link rel="stylesheet" href="style/fonts.css?w19">
+    <link rel="stylesheet" href="style/style_cross.css?w19">
+    <link rel="stylesheet" href="style/button.css?w19">
 </head>
 <body ondragstart="return false;" ondrop="return false;" onselectstart="return false">
 <div class="state show" id="state-main">
@@ -55,15 +55,15 @@
     <div class="navigate_panel bottom">
     </div>
 </div>
-<div class="state" id="state-game">
+<div class="state ov-scroll" id="state-game">
     <div class="navigate_panel top logo">
-        <div class="button_wrapper">
+        <div class="button_wrapper ov-scroll">
             <div class="button_navigate btn_back" id="btn_back"></div>
             <div class="button_navigate" id="btn_full">
             </div>
         </div>
     </div>
-    <div class="wrapper table_wrapper">
+    <div class="wrapper table_wrapper ov-scroll">
         <div class="table" id="table">
         </div>
     </div>
@@ -95,9 +95,9 @@
     </div>
 
 </div>
-<script src="js/init.min.js?w9"></script>
-<script src="js/Levels.min.js?w9"></script>
-<script src="js/core.min.js?w9"></script>
-<script src="js/State.min.js?w9"></script>
+<script src="js/init.min.js?w19"></script>
+<script src="js/Levels.min.js?w19"></script>
+<script src="js/core.min.js?w19"></script>
+<script src="js/State.min.js?w19"></script>
 </body>
 </html>

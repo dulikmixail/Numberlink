@@ -94,7 +94,7 @@ function clearField() {
 }
 
 function game_Init() {
-    // window.ontouchmove  = preventDefault;
+    window.ontouchmove  = preventDefault;
     stateGame.addEventListener("mouseup", function () {
         eUp();
     });
