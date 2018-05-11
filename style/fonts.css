@@ -1,0 +1,40 @@
+@font-face {
+    font-family: 'CoText-Regular';
+    src: url('../fonts/CoText-Regular.woff') format('woff'),
+    url('../fonts/CoText-Regular.ttf') format('truetype'),
+    url('../fonts/CoText-Regular.svg#CoText-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'CoText_Rg';
+    src: url('../fonts/CoText_Rg.eot');
+    src: url('../fonts/CoText_Rg.woff2') format('woff2'),
+    url('../fonts/CoText_Rg.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'CoText-Bold';
+    src: url('../fonts/CoText-Bold.woff') format('woff'),
+    url('../fonts/CoText-Bold.ttf') format('truetype'),
+    url('../fonts/CoText-Bold.svg#CoText-Bold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'CoText_Bd';
+    src: url('../fonts/CoText_Bd.eot');
+    src: url('../fonts/CoText_Bd.woff2') format('woff2'),
+    url('../fonts/CoText_Bd.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+
+

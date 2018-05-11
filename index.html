@@ -3,93 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <title>Numberlink</title>
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/start.css">
-    <link rel="stylesheet" href="style/levels.css">
-    <link rel="stylesheet" href="style/modal.css">
-    <link rel="stylesheet" href="style/icon.css">
+    <link rel="stylesheet" href="style/fonts.css?w9">
+    <link rel="stylesheet" href="style/style.css?w9">
+    <link rel="stylesheet" href="style/button.css?w9">
 </head>
 <body ondragstart="return false;" ondrop="return false;" onselectstart="return false">
 <div class="state show" id="state-main">
-    <div class="wrapper main-wrapper">
-        <div class="container">
-            <a class="btn" href="#" id="start-game">Start game</a>
+    <div class="navigate_panel top logo">
+    </div>
+    <div class="wrapper">
+        <span class="stars n1"></span>
+        <span class="stars n2"></span>
+        <span class="stars n3"></span>
+        <span class="moon"></span>
+        <span class="dreams-keeper"></span>
+        <span class="btn start" id="start-game">العب الآن </span>
+    </div>
+    <div class="navigate_panel bottom">
+        <div class="btn show_rules" id="btn_show_rules">طريقة اللعب</div>
+    </div>
+</div>
+<div class="state" id="state-rules">
+    <div class="navigate_panel top logo">
+        <div class="close" id="close_rule"></div>
+    </div>
+    <div class="wrapper">
+        <span class="stars n1"></span>
+        <span class="stars n3"></span>
+        <span class="moon"></span>
+        <span class="dreams-keeper"></span>
+        <span class="btn rules">طريقة اللعب</span>
+        <div class="text_rules">
+            <p>صل الرموز المتشابهة ببعضها دون أن تتقاطع ودون</p>
+            <p>أن يتبقى في المتاهة مربع فارغ</p>
+            <p>صور الشاشة عند ظهور كلمة مبرووك الخاصة بمتاهة</p>
+            <p><strong>@SAIBLIVE </strong>ذلك اليوم وشاركنا الصورة على حسابنا في تويتر </p>
         </div>
+    </div>
+    <div class="navigate_panel bottom">
     </div>
 </div>
 <div class="state" id="state-levels">
-    <div class="navigate_panel">
-        <div>Levels</div>
+    <div class="navigate_panel top logo">
     </div>
     <div class="wrapper levels_wrapper">
+        <span class="stars n1"></span>
+        <span class="stars n2"></span>
+        <span class="stars n3"></span>
+        <span class="dreams-keeper"></span>
     </div>
-    <div class="navigate_panel">
-        <div>Some text</div>
+    <div class="navigate_panel bottom">
     </div>
 </div>
 <div class="state" id="state-game">
-    <div class="navigate_panel">
+    <div class="navigate_panel top logo">
         <div class="button_wrapper">
-            <div class="button_navigate" id="btn_back">Back</div>
-            <div class="button_navigate">
-                <svg class="svg-mute" version="1.1"  xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve">
-<path d="M578.135,106.298c-11.136-6.299-24.275-6.076-35.245,0.494c-0.501,0.334-0.994,0.675-1.454,1.058L386.939,238.584H265.662
-	c-6.299,0-11.414,5.123-11.414,11.421v216.649c0,3.063,1.225,5.957,3.334,8.087c2.186,2.103,5.018,3.327,8.08,3.327l120.99-0.056
-	l154.399,141.871c0.612,0.501,1.226,0.96,1.837,1.336c5.632,3.396,11.859,5.065,18.04,5.065c5.902,0,11.805-1.503,17.205-4.564
-	c11.414-6.403,18.207-18.138,18.207-31.403V137.756C596.342,124.498,589.549,112.756,578.135,106.298L578.135,106.298z
-	 M573.514,590.317c0,4.914-2.449,9.243-6.569,11.582c-1.782,1.017-6.236,2.909-11.414,0.278L402.46,461.601v-51.962
-	c0-6.278-5.06-11.415-11.345-11.415c-6.354,0-11.422,5.137-11.422,11.415v45.545l-102.609,0.056v-193.82h102.609v45.601
-	c0,6.285,5.068,11.415,11.422,11.415c6.285,0,11.345-5.129,11.345-11.415v-51.726l152.902-129.343
-	c5.233-2.735,9.8-0.787,11.582,0.216c4.12,2.338,6.569,6.681,6.569,11.588V590.317L573.514,590.317z"/>
-<path class="circle_sm" d="M744.895,358.302c0-68.104-45.714-128.849-111.191-147.78c-6.069-1.726-12.361,1.726-14.087,7.795
-	c-1.782,6.014,1.726,12.361,7.795,14.101c55.734,16.133,94.654,67.916,94.654,125.884c0,58.018-38.92,109.813-94.654,125.905
-	c-6.069,1.78-9.577,8.06-7.795,14.128c1.447,5.012,5.957,8.24,10.913,8.24c1.058,0,2.115-0.167,3.174-0.432
-	C699.182,487.214,744.895,426.397,744.895,358.302L744.895,358.302z"/>
-<path class="circle_lg" fill="none" stroke="#000" stroke-width="22" stroke-linecap="round" stroke-miterlimit="10" d="M640.838,142.911
-	c0,0,168.676,15.663,168.676,221.688c0,206.024-170.985,225.704-212.049,225.704c-41.064,0-212.451-26.556-212.451-224.926
-	S559.15,139.698,596.73,139.698c37.582,0-192.841,430.925-192.841,430.925"/>
-</svg>
-            </div>
+            <div class="button_navigate btn_back" id="btn_back"></div>
             <div class="button_navigate" id="btn_full">
-                Full-screen
-                <!--<ul>-->
-                    <!--<li class="full"><a href="#non">Full-screen</a></li>-->
-                <!--</ul>-->
             </div>
-
         </div>
     </div>
     <div class="wrapper table_wrapper">
         <div class="table" id="table">
         </div>
     </div>
-    <div class="navigate_panel">
+    <div class="navigate_panel bottom">
         <div class="button_wrapper">
-            <div class="button_navigate" id="btn_clear">Clear field</div>
+            <div class="button_navigate reg_button" id="btn_clear"></div>
         </div>
     </div>
 </div>
 <div class="state" id="state-lvl_complete">
-    <!-- Modal -->
-    <div class="modal-wrapper open">
-        <div class="modal">
-            <div class="head">
-                <a class="btn-close trigger" href="#">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </a>
-            </div>
-            <div class="content">
-                <div class="good-job">
-                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                    <h1>Good Job!</h1>
-                </div>
-            </div>
+
+    <div class="navigate_panel top logo">
+        <div class="button_wrapper"></div>
+    </div>
+    <div class="wrapper lvl_complete_wrapper">
+        <div class="complete_level">1</div>
+        <div class="header">مبرووك</div>
+        <div class="text">
+            <p>صور الشاشة</p>
+            <p>وشاركنا الصورة على</p>
+            <p>حسابنا في تويتر</p>
+        </div>
+        <div class="subscribe">@SAIBLIVE</div>
+    </div>
+    <div class="navigate_panel bottom">
+        <div class="button_wrapper">
+            <div class="button_navigate reg_button btn_back" id="btn_home"></div>
         </div>
     </div>
-</div>
 
-<script src="js/Levels.js"></script>
-<script src="js/core.js"></script>
-<script src="js/State.js"></script>
+</div>
+<script src="js/init.min.js?w9"></script>
+<script src="js/Levels.min.js?w9"></script>
+<script src="js/core.min.js?w9"></script>
+<script src="js/State.min.js?w9"></script>
 </body>
 </html>
