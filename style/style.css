@@ -1,18 +1,91 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700");
 
 body {
+    font-size: 5px;
     margin: 0;
     padding: 0;
     color: #3d3d3d;
+    height: 100vh;
+    width: 100vw;
     background: #f0f0f0;
     font-family: CoText-Bold, CoText_Bd, "Lato", sans-serif;
+}
 
+.close {
+    display: block;
+    position: absolute;
+    top: 2vh;
+    right: 8vh;
+    width: 10vh;
+    height: 10vh;
+    cursor: pointer;
+}
+
+.close:before,
+.close:after {
+    content: "";
+    position: absolute;
+    top: 4vh;
+    width: 8vh;
+    height: 1vh;
+    background: #3d3d3d;
+}
+
+.close:before {
+    transform: rotate(45deg);
+}
+
+.close:after {
+    transform: rotate(-45deg);
+}
+
+.btn {
+    cursor: pointer;
+    color: #3d3d3d;
+    width: 40%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url("../img/start-game.png") no-repeat center center;
+    background-size: contain;
+    z-index: 5;
+}
+
+.btn.start {
+    width: 60%;
+    height: 30%;
+    font-size: 15em;
+    margin: auto;
+}
+
+.btn.rules {
+    font-size: 12em;
+    cursor: auto;
+    width: 25%;
+    height: 20%;
+    position: absolute;
+    top: 8%;
+    right: 8%;
+}
+
+.text_rules {
+    position: absolute;
+    right: 10%;
+    top: 35%;
+    font-family: CoText-Regular, CoText_Rg, "Lato", sans-serif;
+}
+
+.text_rules p {
+    font-size: 10em;
+    line-height: 1.5em;
+    text-align: right;
+    margin: 0;
+    padding: 0;
 }
 
 .wrapper {
-    top: 12%;
     display: flex;
-    display: -webkit-flex;
     align-items: center;
     align-content: center;
     position: relative;
@@ -78,9 +151,18 @@ body {
 }
 
 .btn.show_rules {
-    font-size: 3vh;
+    font-size: 5em;
     width: 40%;
     height: 80%;
+}
+
+.btn.rules {
+    width: 40%;
+    height: 30%;
+}
+
+.text_rules {
+    top: 45%;
 }
 
 .stars.n3 {
@@ -260,11 +342,10 @@ body {
 
 .state {
     flex-direction: column;
-    align-items: stretch;
-    align-content: space-between;
+    justify-content: center;
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: none;
 }
 
@@ -277,7 +358,6 @@ body {
 
 .navigate_panel {
     position: fixed;
-    font-size: 4vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -357,7 +437,7 @@ body {
     position: relative;
     height: 100%;
     box-sizing: border-box;
-    font-size: 8vh;
+    user-select: none;
 }
 
 .table .row .cell.screamer:after {
@@ -377,8 +457,8 @@ body {
     width: 100%;
     height: 100%;
     background-color: #d5d5d5;
-    background-size: contain;
     position: relative;
+    user-select: none;
 }
 
 .table .row .cell .value_wrapper span {
@@ -387,7 +467,7 @@ body {
     width: 96%;
     height: 96%;
     margin: 3% 2% 1% 2%;
-    box-shadow: 0 0.3vh 0.2vh #a4a4a4, 0 -0.3vh 0.2vh #efefef, 0.2vh 0 0.2vh #cacaca, -0.2vh 0 0.2vh #cacaca;
+    box-shadow: 0 2px 2px #a4a4a4, 0 -2px 2px #efefef, 2px 0 2px #cacaca, -2px 0 2px #cacaca;
 }
 
 .table .row .cell .value_wrapper:before {
@@ -396,6 +476,7 @@ body {
     height: 100%;
     position: absolute;
     z-index: 10;
+    user-select: none;
 }
 
 .table .row .cell .value_wrapper .value {
@@ -493,7 +574,7 @@ body {
 .value_wrapper.color-6,
 .value_wrapper.color-7,
 .value_wrapper.color-8 {
-    background-size: 85%;
+    background-size: 90%;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -578,6 +659,13 @@ body {
     background-color: #c2b200 !important;
 }
 
+/*.table .row .cell .value_wrapper::before {*/
+/*display: none !important;*/
+/*}*/
+.table .row .cell .value_wrapper span {
+    display: none !important;
+}
+
 .disabled {
     -webkit-filter: saturate(50%) !important;
     filter: saturate(50%) !important;
@@ -656,97 +744,36 @@ body {
 }
 
 .wrapper .level {
-    background: url("../img/moon.png") no-repeat center left;
+    position: relative;
+    font-size: 15em;
+    line-height: 2em;
+    background: url("../img/moon.png") no-repeat;
     background-size: contain;
     text-align: center;
     z-index: 5;
-
+    width: 2.3em;
 }
 
 .wrapper .level:before {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    font-size: 0.5em;
+    line-height: 1.2em;
     display: block;
     content: "اليوم ";
 }
 
-@media (orientation: portrait) {
-    .wrapper .level {
-        width: 17vw;
-        height: 15vw;
-        margin: 1vw 1vw;
-        font-size: 6vw;
-        line-height: 6vw;
-    }
+/*!*iOS Safari*!*/
+/*.ov-scroll {*/
+/*overflow-y: auto;*/
+/*-webkit-overflow-scrolling: touch;*/
+/*}*/
 
-    .wrapper .level:before {
-        font-size: 2.5vw;
-        line-height: 4vw;
-    }
+/*body {*/
+/*-webkit-text-size-adjust: none;*/
+/*}*/
 
-    .table {
-        height: 95vw;
-        width: 95vw;
-    }
-
-    .dreams-keeper {
-        height: 35%;
-        width: 30%;
-    }
-
-    .moon {
-        height: 10%;
-        width: 10%;
-    }
-
-    .table .row .cell.screamer:after {
-        font-size: 18vw;
-    }
-
-    .button_navigate {
-        margin: 0 15% 0 8%;
-    }
-    #state-game .logo:after {
-        display: none;
-    }
-}
-
-@media (orientation: landscape) {
-    .wrapper .level {
-        width: 18vh;
-        height: calc(8vh + 4vw);
-        margin: 1vh 1.5vh;
-        font-size: calc(3vh + 1.5vw);
-        line-height: calc(3vh + 1.5vw);
-    }
-
-    .wrapper .level:before {
-        font-size: 3vh;
-    }
-
-    .table {
-        height: 64vh;
-        width: 64vh;
-    }
-
-    .dreams-keeper {
-        height: 60%;
-        width: 30%;
-    }
-
-    .button_navigate {
-        margin: 0 8%;
-    }
-}
-
-/*iOS Safari*/
-.ov-scroll{
-    overflow-y: auto;
-    -webkit-overflow-scrolling:touch;
-}
-
-body{
-    -webkit-text-size-adjust: none;
-}
-
-a, label{
-    -webkit-tap-highlight-color: transparent;
-}
+/*a, label {*/
+/*-webkit-tap-highlight-color: transparent;*/
+/*}*/

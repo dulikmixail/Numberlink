@@ -94,7 +94,7 @@ function clearField() {
 }
 
 function game_Init() {
-    window.ontouchmove  = preventDefault;
+    window.ontouchmove = preventDefault;
     stateGame.addEventListener("mouseup", function () {
         eUp();
     });
@@ -150,7 +150,7 @@ function eDown(el) {
         lastSelectedCell = findCell;
         deleteAfterPath(findCell);
         rebuildField();
-        removeClass(findCell.dom.firstChild, "disabled");
+        // removeClass(findCell.dom.firstChild, "disabled");
     }
 }
 
@@ -401,7 +401,7 @@ function deleteLocking(cell) {
 }
 
 function rebuildField(withAutoMagnet) {
-    // gameStorage.save();
+    gameStorage.save();
     var notFoundedZeroValue = true;
     var allWayFound = true;
     CurrentLevel.GetCurrentState().forEach(function (row) {
@@ -409,7 +409,7 @@ function rebuildField(withAutoMagnet) {
             if (cell.isPublic) {
                 buildPublicCell(cell);
             } else {
-                buildNotPublicCell(cell)
+                // buildNotPublicCell(cell)
             }
 
             if (!cell.isPublic) {
@@ -424,7 +424,7 @@ function rebuildField(withAutoMagnet) {
     });
 
     if (allWayFound && notFoundedZeroValue) {
-        // gameStorage.levelComplete();
+        gameStorage.levelComplete();
         var stateElements = document.querySelectorAll('[id^="state-"]');
         stateElements.forEach(function (el) {
             removeClass(el, "show");
