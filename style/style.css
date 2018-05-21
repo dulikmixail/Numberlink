@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Lato:400,700");
-
 body {
     font-size: 5px;
     margin: 0;
@@ -9,6 +7,7 @@ body {
     width: 100vw;
     background: #f0f0f0;
     font-family: CoText-Bold, CoText_Bd, "Lato", sans-serif;
+    overflow-y: hidden;
 }
 
 .close {
@@ -39,11 +38,13 @@ body {
     transform: rotate(-45deg);
 }
 
+#state-main {
+    font-size: 1vh;
+}
+
 .btn {
     cursor: pointer;
     color: #3d3d3d;
-    width: 40%;
-    height: 30%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,35 +54,41 @@ body {
 }
 
 .btn.start {
-    width: 60%;
-    height: 30%;
-    font-size: 15em;
+    width: 8em;
+    height: 3em;
+    font-size: 8em;
     margin: auto;
 }
 
 .btn.rules {
-    font-size: 12em;
+    font-size: 11em;
     cursor: auto;
-    width: 25%;
-    height: 20%;
+    width: 10em;
+    height: 3em;
     position: absolute;
-    top: 8%;
-    right: 8%;
+    top: 2em;
+    right: 5em;
 }
 
 .text_rules {
     position: absolute;
-    right: 10%;
-    top: 35%;
+    right: 30em;
+    top: 60em;
     font-family: CoText-Regular, CoText_Rg, "Lato", sans-serif;
 }
 
 .text_rules p {
     font-size: 10em;
-    line-height: 1.5em;
+    line-height: 1.4em;
     text-align: right;
     margin: 0;
     padding: 0;
+}
+
+.btn.show_rules {
+    font-size: 3em;
+    width: 20em;
+    height: 3em;
 }
 
 .wrapper {
@@ -93,6 +100,25 @@ body {
     width: 100%;
     background: #f0f0f0;
 }
+
+/*.wrapper.table_wrapper:before {*/
+    /*content: '';*/
+    /*display: inline-block;*/
+    /*height: 100%;*/
+    /*vertical-align: middle;*/
+/*}*/
+/*.wrapper.table_wrapper{*/
+    /*display: inline-block;*/
+    /*text-align: center;*/
+/*}*/
+/*.wrapper.table_wrapper .table{*/
+    /*display: inline-block;*/
+    /*vertical-align: middle;*/
+/*}*/
+
+/*.table .row .cell .value_wrapper:before {*/
+    /*left: 0;*/
+/*}*/
 
 .stars {
     display: block;
@@ -131,9 +157,11 @@ body {
 .dreams-keeper {
     display: block;
     position: absolute;
-    top: 5%;
-    left: 10%;
-    background: url("../img/dreams-keeper3.png") no-repeat;
+    height: 70em;
+    width: 30em;
+    top: -30%;
+    left: 15%;
+    background: url("../img/dreams-keeper3.png?w1w") no-repeat;
     background-size: contain;
 }
 
@@ -142,27 +170,12 @@ body {
     height: 60%;
     width: 14%;
     top: -12%;
-    left: 0;
+    left: -5%;
     background-position: 80%;
 }
 
 #state-main .navigate_panel {
     justify-content: flex-start;
-}
-
-.btn.show_rules {
-    font-size: 5em;
-    width: 40%;
-    height: 80%;
-}
-
-.btn.rules {
-    width: 40%;
-    height: 30%;
-}
-
-.text_rules {
-    top: 45%;
 }
 
 .stars.n3 {
@@ -355,6 +368,9 @@ body {
     left: 0;
     z-index: 20;
 }
+#state-game {
+
+}
 
 .navigate_panel {
     position: fixed;
@@ -440,25 +456,13 @@ body {
     user-select: none;
 }
 
-.table .row .cell.screamer:after {
-    display: block;
-    position: absolute;
-    content: '!';
-    color: red;
-    top: -40%;
-    height: 100%;
-    width: 100%;
-    z-index: 1;
-    font-size: 12vh;
-    text-align: center;
-}
-
 .table .row .cell .value_wrapper {
     width: 100%;
     height: 100%;
     background-color: #d5d5d5;
     position: relative;
     user-select: none;
+    border-radius: 5%;
 }
 
 .table .row .cell .value_wrapper span {
@@ -467,7 +471,7 @@ body {
     width: 96%;
     height: 96%;
     margin: 3% 2% 1% 2%;
-    box-shadow: 0 2px 2px #a4a4a4, 0 -2px 2px #efefef, 2px 0 2px #cacaca, -2px 0 2px #cacaca;
+    box-shadow: 0 3px 2px #a4a4a4, 0 -3px 2px #efefef, 3px 0 2px #cacaca, -3px 0 2px;
 }
 
 .table .row .cell .value_wrapper:before {
@@ -477,6 +481,7 @@ body {
     position: absolute;
     z-index: 10;
     user-select: none;
+    left: 0;
 }
 
 .table .row .cell .value_wrapper .value {
@@ -658,17 +663,21 @@ body {
 .cell.color-8:before {
     background-color: #c2b200 !important;
 }
-
-/*.table .row .cell .value_wrapper::before {*/
-/*display: none !important;*/
-/*}*/
-.table .row .cell .value_wrapper span {
-    display: none !important;
-}
-
 .disabled {
     -webkit-filter: saturate(50%) !important;
     filter: saturate(50%) !important;
+}
+
+.table .row .cell.screamer:before {
+    position: absolute;
+    content: ' ';
+    display: block;
+    height: 80%;
+    width: 100%;
+    top: 10%;
+    z-index: 1;
+    background: url("../img/scrmr.png") no-repeat center center;
+    background-size: contain;
 }
 
 /*Size cell 5*/
@@ -764,16 +773,16 @@ body {
     content: "اليوم ";
 }
 
-/*!*iOS Safari*!*/
-/*.ov-scroll {*/
-/*overflow-y: auto;*/
-/*-webkit-overflow-scrolling: touch;*/
-/*}*/
 
-/*body {*/
-/*-webkit-text-size-adjust: none;*/
-/*}*/
+.debug {
+    position: fixed;
+    z-index: 1000;
+    font-size: 15px;
+    width: 100%;
+    height: 20%;
+    background: #e1e1e1;
+}
 
-/*a, label {*/
-/*-webkit-tap-highlight-color: transparent;*/
-/*}*/
+.hidden {
+    display: none;
+}

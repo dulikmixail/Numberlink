@@ -4,68 +4,437 @@
         height: 70vh;
         width: 70vh;
     }
+
     .wrapper .level {
         font-size: 13em;
     }
+
+    .dreams-keeper {
+        height: 110em;
+        width: 40em;
+        top: -80%;
+    }
+
+    #state-rules .dreams-keeper {
+        height: 150em;
+        width: 50em;
+        top: -85%;
+    }
+
+    .levels_wrapper .dreams-keeper {
+        height: 80%;
+        width: 24%;
+        top: -30%;
+    }
+
+    .btn.start {
+        font-size: 8em;
+    }
+
+    .btn.rules {
+        font-size: 7em;
+        top: 1.5em;
+        right: 3.8em;
+    }
+
+    .text_rules {
+        right: 25em;
+        top: 35em;
+    }
+
+    .text_rules p {
+        font-size: 6em;
+        line-height: 1.8em;
+    }
+
+    .btn.show_rules {
+        font-size: 4em;
+        width: 15em;
+    }
+
 }
 
 /*laptops */
 @media (min-width: 1200px) and (max-width: 1599px) {
-    .table {
-        height: 70vh;
-        width: 70vh;
-    }
     .wrapper .level {
         font-size: 9em;
     }
+
+    .table {
+        height: 350px;
+        width: 350px;
+    }
+
+    .dreams-keeper {
+        height: 90em;
+        width: 40em;
+        top: -60%;
+    }
+
+    #state-rules .dreams-keeper {
+        height: 100em;
+        width: 40em;
+        top: -40%;
+    }
+
+    .levels_wrapper .dreams-keeper {
+        height: 80%;
+        width: 24%;
+        top: -30%;
+    }
+
+    .btn.start {
+        font-size: 9em;
+    }
+
+    .btn.rules {
+        font-size: 6em;
+        top: 2em;
+        right: 1em;
+    }
+
+    .text_rules {
+        right: 5em;
+        top: 30em;
+    }
+
+    .text_rules p {
+        font-size: 6em;
+        line-height: 2em;
+    }
+
+    .btn.show_rules {
+        font-size: 4em;
+        width: 15em;
+    }
+    .table .row .cell .value_wrapper span {
+        box-shadow: 0 1px 1px #a4a4a4, 0 -1px 1px #efefef, 1px 0 1px #cacaca, -1px 0 1px;
+    }
+
 }
 
 /* Portrait tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
+    .wrapper .level {
+        font-size: 8em;
+    }
+
+    .table {
+        height: 500px;
+        width: 500px;
+    }
+
+    .dreams-keeper {
+        height: 70em;
+        width: 25em;
+        top: -40%;
+    }
+
+    #state-rules .dreams-keeper {
+        height: 90em;
+        width: 40em;
+        top: -40%;
+    }
+
+    .levels_wrapper .dreams-keeper {
+        height: 80%;
+        width: 24%;
+        top: -30%;
+    }
+
+    .btn.start {
+        font-size: 8em;
+    }
+
+    .btn.rules {
+        font-size: 5em;
+        top: 2em;
+        right: 2em;
+    }
+
+    .text_rules {
+        right: 5em;
+        top: 30em;
+    }
+
+    .text_rules p {
+        font-size: 6em;
+        line-height: 1.8em;
+    }
+
+    .btn.show_rules {
+        font-size: 3.5em;
+        width: 15em;
+    }
+    .table .row .cell .value_wrapper span {
+        box-shadow: 0 1px 1px #a4a4a4, 0 -1px 1px #efefef, 1px 0 1px #cacaca, -1px 0 1px;
+    }
 
 }
 
 /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
+    .wrapper .level {
+        font-size: 7em;
+    }
+
+    .table {
+        height: 400px;
+        width: 400px;
+    }
+
+    .dreams-keeper {
+        height: 60em;
+        width: 25em;
+        top: -30%;
+    }
+
+    #state-rules .dreams-keeper {
+        height: 70em;
+        width: 50em;
+        top: -20%;
+    }
+
+    .levels_wrapper .dreams-keeper {
+        height: 80%;
+        width: 24%;
+        top: -30%;
+    }
+
+    .btn.start {
+        font-size: 6em;
+    }
+
+    .btn.rules {
+        font-size: 5em;
+        top: 3em;
+        right: 1em;
+    }
+
+    .text_rules {
+        right: 5em;
+        top: 40em;
+    }
+
+    .text_rules p {
+        font-size: 5em;
+        line-height: 1.8em;
+    }
+
+    .btn.show_rules {
+        font-size: 3.5em;
+        width: 15em;
+    }
+    .table .row .cell .value_wrapper span {
+        box-shadow: 0 1px 1px #a4a4a4, 0 -1px 1px #efefef, 1px 0 1px #cacaca, -1px 0 1px;
+    }
 
 }
 
 /* Landscape phones and portrait tablets */
-@media (max-width: 767px) and (max-width: 481px) {
+@media (min-width: 481px) and (max-width: 767px) {
+    .table {
+        height: 400px;
+        width: 400px;
+    }
+
+    .wrapper .level {
+        font-size: 6em;
+    }
+
+    .dreams-keeper {
+        height: 45em;
+        width: 20em;
+        top: -17%;
+    }
+
+    #state-rules .dreams-keeper {
+        height: 60em;
+        width: 40em;
+        top: -15%;
+    }
+
+    .levels_wrapper .dreams-keeper {
+        height: 80%;
+        width: 24%;
+        top: -30%;
+    }
+
+    .btn.start {
+        font-size: 5em;
+    }
+
+    .btn.rules {
+        font-size: 4em;
+        top: 5em;
+        right: 1em;
+    }
+
+    .text_rules {
+        right: 5em;
+        top: 40em;
+    }
+
+    .text_rules p {
+        font-size: 3.8em;
+        line-height: 1.8em;
+    }
+
+    .btn.show_rules {
+        font-size: 3em;
+        width: 15em;
+    }
+    .table .row .cell .value_wrapper span {
+        box-shadow: 0 1px 1px #a4a4a4, 0 -1px 1px #efefef, 1px 0 1px #cacaca, -1px 0 1px;
+    }
 
 }
 
 /* Landscape phones and smaller */
 @media (max-width: 480px) {
+    .table {
+        height: 350px;
+        width: 350px;
+    }
+
+    #state-game .navigate_panel.logo:after {
+        display: none;
+    }
+
+    .wrapper .level {
+        font-size: 6em;
+    }
+
+    .dreams-keeper {
+        height: 45em;
+        width: 20em;
+        top: -17%;
+    }
+
+    #state-rules .dreams-keeper {
+        height: 60em;
+        width: 40em;
+        top: -15%;
+    }
+
+    .levels_wrapper .dreams-keeper {
+        height: 80%;
+        width: 24%;
+        top: -30%;
+    }
+
+    .btn.start {
+        font-size: 5em;
+    }
+
+    .btn.rules {
+        font-size: 4em;
+        top: 6em;
+        right: 1em;
+    }
+
+    .text_rules {
+        right: 5em;
+        top: 50em;
+    }
+
+    .text_rules p {
+        font-size: 2.5em;
+        line-height: 2em;
+    }
+
+    .btn.show_rules {
+        font-size: 2em;
+        width: 15em;
+    }
+
+    .table .row .cell .value_wrapper span {
+        box-shadow: 0 1px 1px #a4a4a4, 0 -1px 1px #efefef, 1px 0 1px #cacaca, -1px 0 1px;
+    }
 
 }
 
-@media (max-width: 1080px) and (min-width: 721px) and (orientation: portrait){
+@media (min-width: 768px) and (max-width: 1080px) and (orientation: portrait) {
+    .wrapper .level {
+        font-size: 14em;
+    }
+
     .table {
         height: 900px;
         width: 900px;
     }
-    .btn.rules{
-        font-size: 38px;
+
+    #state-game .navigate_panel.logo:after {
+        display: none;
     }
-    .btn.show_rules {
-        font-size: 10px;
+
+    .levels_wrapper .dreams-keeper {
+        height: 80%;
+        width: 24%;
+        top: -30%;
+        left: 1%;
     }
+
     .btn.start {
-        font-size: 70px;
+        font-size: 4em;
     }
+
+    .btn.rules {
+        font-size: 9em;
+        top: 8em;
+        right: 1em;
+    }
+
+    .text_rules {
+        right: 12em;
+        top: 120em;
+    }
+
+    .text_rules p {
+        font-size: 6em;
+        line-height: 2em;
+    }
+
     .btn.show_rules {
-        font-size: 30px;
+        font-size: 2em;
+        width: 15em;
     }
+
+    .dreams-keeper {
+        height: 40em;
+        width: 20em;
+        top: -17%;
+    }
+
+    #state-rules .dreams-keeper {
+        height: 120em;
+        width: 80em;
+        top: -12%;
+    }
+
+    .moon {
+        top: 5%;
+        left: 8%;
+        height: 10%;
+        width: 10%;
+    }
+
 }
 
-@media (max-width: 720px) and (orientation: portrait){
-}
+@media (min-width: 481px) and (max-width: 767px) and (orientation: portrait) {
+    .table {
+        height: 400px;
+        width: 400px;
+    }
 
-@media (orientation: portrait) {
-
-}
-
-@media (orientation: landscape) {
+    .levels_wrapper .dreams-keeper {
+        height: 80%;
+        width: 25%;
+        top: -25%;
+        left: 1%;
+    }
+    .table .row .cell .value_wrapper span {
+        box-shadow: 0 1px 1px #a4a4a4, 0 -1px 1px #efefef, 1px 0 1px #cacaca, -1px 0 1px;
+    }
 
 }

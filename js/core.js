@@ -1,5 +1,4 @@
 var body = document.getElementsByTagName("body")[0];
-var stateGame = document.getElementById("state-game");
 var isMouseDown = false;
 var logger = false;
 var lastSelectedCell;
@@ -93,8 +92,9 @@ function clearField() {
     rebuildField();
 }
 
+
 function game_Init() {
-    window.ontouchmove = preventDefault;
+    window.scrollTo(0, (window.innerHeight / 2) - (document.getElementById("table").clientHeight / 2));
     stateGame.addEventListener("mouseup", function () {
         eUp();
     });
@@ -103,14 +103,14 @@ function game_Init() {
         lastTouchElement = null;
     });
     stateGame.addEventListener("touchstart", function (event) {
-        var element = document.elementFromPoint(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
+        var element = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
         if (element.classList.contains("value_wrapper")) {
             eDown(element);
             lastTouchElement = element;
         }
     });
     stateGame.addEventListener("touchmove", function (event) {
-        var element = document.elementFromPoint(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
+        var element = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
         if (element !== lastTouchElement &&
             element.classList.contains("value_wrapper") &&
             lastTouchElement !== null) {

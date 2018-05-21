@@ -12,6 +12,7 @@ var fullBtn = document.getElementById("btn_full");
 var clearBtn = document.getElementById("btn_clear");
 var closeRule = document.getElementById("close_rule");
 var showRule = document.getElementById("btn_show_rules");
+var stateGame = document.getElementById("state-game");
 
 document.addEventListener('DOMContentLoaded', function () { // Аналог $(document).ready(function(){
     backBtns.forEach(function (btn) {
@@ -47,6 +48,12 @@ function preventDefault(e) {
         e.preventDefault();
     e.returnValue = false;
 }
+
+stateGame.addEventListener("touchmove", function (event) {
+    preventDefault(event);
+    // event.preventDefault();
+    event.stopPropagation();
+}, false);
 
 var States = function () {
     this.states = document.querySelectorAll(".state");
@@ -344,9 +351,7 @@ removeClass = function (el, className) {
     else
         el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 };
-window.addEventListener("orientationchange", function () {
-    if (navigator.userAgent.match(/(iPhone|iPod|iPad)/i)) {
-        document.documentElement.innerHTML = document.documentElement.innerHTML;
-    }
-}, false);
 
+if (isMobile.iOS()) {
+    addClass(fullBtn, "hidden");
+}
