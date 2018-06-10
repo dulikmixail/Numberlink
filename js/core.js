@@ -1,7 +1,7 @@
 var body = document.getElementsByTagName("body")[0];
 var table = document.getElementById("table");
 var lvlComplete = document.getElementById("state-lvl_complete");
-var mouseDown = false;
+var isMouseDown = false;
 var logger = false;
 var lastSelectedCell;
 
@@ -36,71 +36,93 @@ document.querySelectorAll(".level").forEach(function (v) {
 
 function game_Init() {
     body.addEventListener("mouseup", function () {
-        autoMagnet(lastSelectedCell);
-        rebuildField();
-        mouseDown = false;
-        lastSelectedCell = null;
+        eUp();
     });
-
     document.querySelectorAll(".value_wrapper").forEach(function (el) {
         el.addEventListener("mousedown", function () {
-            var findCell = findCellByElement(el);
-            if (findCell.value !== 0) {
-                mouseDown = true;
-                lastSelectedCell = findCell;
-                deleteAfterPath(findCell);
-                rebuildField();
-                removeClass(findCell.dom.firstChild, "disabled");
-            }
+            eDown(el);
         });
-        el.addEventListener("mouseover", function () {
-            if (mouseDown) {
-                var selectedCell = findCellByElement(el);
-                var _isEndPath = isEndPath(lastSelectedCell, selectedCell);
-                if (isNeighbor(selectedCell, findNeighbors(lastSelectedCell)) ||
-                    _isEndPath ||
-                    isStartPath(lastSelectedCell, selectedCell)) {
-                    //при переходе на другой цвет для не Public поля
-                    if (selectedCell.before !== null && selectedCell.before.value !== lastSelectedCell.value) {
-                        deleteAfterPath(selectedCell);
-                        selectedCell.before.after = null;
-                        selectedCell.after = null;
-                    }
-                    //когда возвращаемся по томуже цвету обратно
-                    if (selectedCell.value === lastSelectedCell.value && !_isEndPath) {
-                        var step1 = new StepToPath(selectedCell);
-                        var step2 = new StepToPath(lastSelectedCell);
-                        //при попадании на другой путь с одинаковым цветом
-                        if (lastSelectedCell.before !== selectedCell &&
-                            step1.getStartCell() !== step2.getStartCell()) {
-                            deleteAfterPath(selectedCell);
-                            connectTwoPaths(lastSelectedCell, selectedCell)
-                            mouseDown = false;
-                        } else {
-                            deleteAfterPath(selectedCell);
-                            lastSelectedCell = selectedCell;
-                        }
-                    } else {
-                        //когда двигаемся по пустым ячекам
-                        // и при движении в обрачном напреавдении,
-                        // когда мышь наводиться на Public поле
-                        deleteAfterPath(selectedCell);
-                        selectedCell.before = lastSelectedCell;
-                        selectedCell.setValue(lastSelectedCell.value);
-                        lastSelectedCell.after = selectedCell;
-                        lastSelectedCell = selectedCell;
-                    }
+        el.addEventListener("touchstart", function () {
+            eDown(el);
+        });
 
-                }
-                rebuildField();
-            }
+        el.addEventListener("mouseover", function () {
+            eOver(el);
+        });
+        el.addEventListener("touchmove", function () {
+            eOver(el);
         });
         el.addEventListener("click", function () {
-            var cell = findCellByElement(el);
-            deletePath(cell);
-            log("One click");
+            eClick(el);
         });
     });
+}
+
+function eUp(el) {
+    autoMagnet(lastSelectedCell);
+    rebuildField();
+    isMouseDown = false;
+    lastSelectedCell = null;
+}
+
+function eDown(el) {
+    var findCell = findCellByElement(el);
+    if (findCell.value !== 0) {
+        isMouseDown = true;
+        lastSelectedCell = findCell;
+        deleteAfterPath(findCell);
+        rebuildField();
+        removeClass(findCell.dom.firstChild, "disabled");
+    }
+}
+
+function eOver(el) {
+    if (isMouseDown) {
+        var selectedCell = findCellByElement(el);
+        var _isEndPath = isEndPath(lastSelectedCell, selectedCell);
+        if (isNeighbor(selectedCell, findNeighbors(lastSelectedCell)) ||
+            _isEndPath ||
+            isStartPath(lastSelectedCell, selectedCell)) {
+            //при переходе на другой цвет для не Public поля
+            if (selectedCell.before !== null && selectedCell.before.value !== lastSelectedCell.value) {
+                deleteAfterPath(selectedCell);
+                selectedCell.before.after = null;
+                selectedCell.after = null;
+            }
+            //когда возвращаемся по томуже цвету обратно
+            if (selectedCell.value === lastSelectedCell.value && !_isEndPath) {
+                var step1 = new StepToPath(selectedCell);
+                var step2 = new StepToPath(lastSelectedCell);
+                //при попадании на другой путь с одинаковым цветом
+                if (lastSelectedCell.before !== selectedCell &&
+                    step1.getStartCell() !== step2.getStartCell()) {
+                    deleteAfterPath(selectedCell);
+                    connectTwoPaths(lastSelectedCell, selectedCell)
+                    isMouseDown = false;
+                } else {
+                    deleteAfterPath(selectedCell);
+                    lastSelectedCell = selectedCell;
+                }
+            } else {
+                //когда двигаемся по пустым ячекам
+                // и при движении в обрачном напреавдении,
+                // когда мышь наводиться на Public поле
+                deleteAfterPath(selectedCell);
+                selectedCell.before = lastSelectedCell;
+                selectedCell.setValue(lastSelectedCell.value);
+                lastSelectedCell.after = selectedCell;
+                lastSelectedCell = selectedCell;
+            }
+
+        }
+        rebuildField();
+    }
+}
+
+function eClick(el) {
+    var cell = findCellByElement(el);
+    deletePath(cell);
+    log("One click");
 }
 
 function connectTwoPaths(lastCell, currentCell) {
@@ -128,7 +150,7 @@ function isEndPath(lastCell, currentCell) {
         currentCell.after === null &&
         isNeighbor(currentCell, findNeighbors(lastCell, true))) {
         // removeClass(currentCell.dom.firstChild, "disabled");
-        mouseDown = false;
+        isMouseDown = false;
         return true;
     } else {
         return false;
@@ -256,7 +278,7 @@ function deleteLocking(cell) {
         }
         if (findLocking) {
             deletePath(cell);
-            mouseDown = false;
+            isMouseDown = false;
             lastSelectedCell = null;
         }
     }
