@@ -3,29 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <title>Numberlink</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/fonts.css?w20">
+    <link rel="stylesheet" href="style/style_cross.css?w20">
+    <link rel="stylesheet" href="style/button.css?w20">
 </head>
 <body ondragstart="return false;" ondrop="return false;" onselectstart="return false">
-<div class="state show" id="state-levels">
-    <div class="levels_wrapper">
-        <div class="level" data-level="0">
-            level1
-        </div>
+<div class="state show" id="state-main">
+    <div class="navigate_panel top logo">
+    </div>
+    <div class="wrapper">
+        <span class="stars n1"></span>
+        <span class="stars n2"></span>
+        <span class="stars n3"></span>
+        <span class="moon"></span>
+        <span class="dreams-keeper"></span>
+        <span class="btn start" id="start-game">العب الآن </span>
+    </div>
+    <div class="navigate_panel bottom">
+        <div class="btn show_rules" id="btn_show_rules">طريقة اللعب</div>
     </div>
 </div>
-<div class="state" id="state-game">
-    <div class="table_wrapper">
+<div class="state" id="state-rules">
+    <div class="navigate_panel top logo">
+        <div class="close" id="close_rule"></div>
+    </div>
+    <div class="wrapper">
+        <span class="stars n1"></span>
+        <span class="stars n3"></span>
+        <span class="moon"></span>
+        <span class="dreams-keeper"></span>
+        <span class="btn rules">طريقة اللعب</span>
+        <div class="text_rules">
+            <p>صل الرموز المتشابهة ببعضها دون أن تتقاطع ودون</p>
+            <p>أن يتبقى في المتاهة مربع فارغ</p>
+            <p>صور الشاشة عند ظهور كلمة مبرووك الخاصة بمتاهة</p>
+            <p><strong>@SAIBLIVE </strong>ذلك اليوم وشاركنا الصورة على حسابنا في تويتر </p>
+        </div>
+    </div>
+    <div class="navigate_panel bottom">
+    </div>
+</div>
+<div class="state" id="state-levels">
+    <div class="navigate_panel top logo">
+    </div>
+    <div class="wrapper levels_wrapper">
+        <span class="stars n1"></span>
+        <span class="stars n2"></span>
+        <span class="stars n3"></span>
+        <span class="dreams-keeper"></span>
+    </div>
+    <div class="navigate_panel bottom">
+    </div>
+</div>
+<div class="state ov-scroll" id="state-game">
+    <div class="navigate_panel top logo">
+        <div class="button_wrapper ov-scroll">
+            <div class="button_navigate btn_back" id="btn_back"></div>
+            <div class="button_navigate" id="btn_full">
+            </div>
+        </div>
+    </div>
+    <div class="wrapper table_wrapper ov-scroll">
         <div class="table" id="table">
         </div>
     </div>
-</div>
-<div class="state show" id="state-lvl_complete">
-    <div class="info_wrapper">
-        <div class="info">Level completed</div>
+    <div class="navigate_panel bottom">
+        <div class="button_wrapper">
+            <div class="button_navigate reg_button" id="btn_clear"></div>
+        </div>
     </div>
 </div>
-<script src="js/Levels.js"></script>
-<script src="js/core.js"></script>
-<script src="js/State.js"></script>
+<div class="state" id="state-lvl_complete">
+
+    <div class="navigate_panel top logo">
+        <div class="button_wrapper"></div>
+    </div>
+    <div class="wrapper lvl_complete_wrapper">
+        <div class="complete_level">1</div>
+        <div class="header">مبرووك</div>
+        <div class="text">
+            <p>صور الشاشة</p>
+            <p>وشاركنا الصورة على</p>
+            <p>حسابنا في تويتر</p>
+        </div>
+        <div class="subscribe">@SAIBLIVE</div>
+    </div>
+    <div class="navigate_panel bottom">
+        <div class="button_wrapper">
+            <div class="button_navigate reg_button btn_back" id="btn_home"></div>
+        </div>
+    </div>
+
+</div>
+<script src="js/init.min.js?w20"></script>
+<script src="js/Levels.min.js?w20"></script>
+<script src="js/core.min.js?w20"></script>
+<script src="js/State.min.js?w20"></script>
 </body>
 </html>

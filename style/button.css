@@ -1,0 +1,97 @@
+
+.close {
+    display: block;
+    position: absolute;
+    top: 2vh;
+    right: 8vh;
+    width: 10vh;
+    height: 10vh;
+    cursor: pointer;
+}
+
+.close:before,
+.close:after {
+    content: "";
+    position: absolute;
+    top: 4vh;
+    width: 8vh;
+    height: 1vh;
+    background: #3d3d3d;
+}
+
+.close:before {
+    webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.close:after {
+    webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.btn {
+    cursor: pointer;
+    color: #3d3d3d;
+    width: 40%;
+    height: 30%;
+    font-size: calc(2vh + 2vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url("../img/start-game.png") no-repeat center center;
+    background-size: contain;
+    z-index: 5;
+}
+
+.btn.start {
+    font-size: calc(2.3vh + 2.3vw);
+    margin: auto;
+}
+
+.btn.rules {
+    font-size: calc(1.2vh + 1.2vw);
+    cursor: auto;
+    width: 25%;
+    height: 20%;
+    position: absolute;
+    top: 8%;
+    right: 8%;
+}
+
+.text_rules {
+    position: absolute;
+    right: 10%;
+    top: 35%;
+    font-family: CoText-Regular, CoText_Rg, "Lato", sans-serif;
+    font-size: calc(2vh + 1vw);
+}
+
+.text_rules p {
+    line-height: calc(2.6vh + 2.6vw);
+    text-align: right;
+    margin: 0;
+    padding: 0;
+}
+
+@media (orientation: landscape) {
+
+}
+
+@media (orientation: portrait) {
+    .text_rules {
+        top: 45%;
+    }
+    .btn.rules{
+        font-size: calc(1.4vh + 1.4vw);
+        width: 40%;
+        height: 30%;
+    }
+    .btn.show_rules {
+        font-size: calc(1.5vh + 1.5vw);
+    }
+    .btn.start {
+        width: 60%;
+        height: 30%;
+        font-size: calc(3vh + 3vw);
+    }
+}
