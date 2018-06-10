@@ -1,7 +1,7 @@
 var startGameBtn = document.getElementById("start-game");
 startGameBtn.addEventListener("click", function () {
     if (isTouchDevice() && !isMobile.iOS()) {
-        launchFullScreen(document.getElementsByTagName("body")[0]);
+        // launchFullScreen(document.getElementsByTagName("body")[0]);
     }
     var states = new States();
     states.showState("state-levels");
@@ -12,6 +12,7 @@ var fullBtn = document.getElementById("btn_full");
 var clearBtn = document.getElementById("btn_clear");
 var closeRule = document.getElementById("close_rule");
 var showRule = document.getElementById("btn_show_rules");
+var stateGame = document.getElementById("state-game");
 
 document.addEventListener('DOMContentLoaded', function () { // Аналог $(document).ready(function(){
     backBtns.forEach(function (btn) {
@@ -48,11 +49,17 @@ function preventDefault(e) {
     e.returnValue = false;
 }
 
+stateGame.addEventListener("touchmove", function (event) {
+    preventDefault(event);
+    // event.preventDefault();
+    event.stopPropagation();
+}, false);
+
 var States = function () {
     this.states = document.querySelectorAll(".state");
     this.getStateById = function (id) {
         var findState = null;
-        this.states.forEach(function (state) {
+        this.states && this.states.forEach(function (state) {
             if (state.getAttribute("id") === id) {
                 findState = state;
             }
@@ -240,7 +247,7 @@ level_Init = function () {
     document.querySelectorAll('[data-level]').forEach(function (v) {
         v.addEventListener('click', function () {
             if (isTouchDevice() && !isMobile.iOS()) {
-                launchFullScreen(document.getElementsByTagName("body")[0]);
+                // launchFullScreen(document.getElementsByTagName("body")[0]);
             }
             var number = +this.getAttribute('data-level');
             log("changed level:", number);
@@ -269,14 +276,18 @@ startGame = function (level, number) {
 level_Init();
 
 loadGameField = function (level) {
+    var time1 = new Date();
     var lvl = level !== undefined ? level : CurrentLevel !== undefined ? CurrentLevel : false;
     var data = lvl.GetCurrentState();
     var row, cell;
     if (lvl) {
-        var table = document.getElementById("table");
-        table.innerHTML = '';
+        var table = document.createElement('div');//document.getElementById("table");
+        addClass(table, "table");
         removeClassByStartName(table, "size-");
         addClass(table, "size-" + data.length);
+        //table.innerHTML = '';
+        //removeClassByStartName(table, "size-");
+        //addClass(table, "size-" + data.length);
         for (var i = 0; i < data.length; i++) {
             row = createRow();
             for (var j = 0; j < data.length; j++) {
@@ -287,13 +298,18 @@ loadGameField = function (level) {
                 } else {
                     cell = createCell();
                     addClass(cell.firstChild, "color-" + data[i][j].value);
-                    addClass(cell.firstChild, "disabled");
+                    // addClass(cell.firstChild, "disabled");
                     data[i][j].dom = cell;
                 }
                 row.appendChild(cell);
             }
             table.appendChild(row);
         }
+        var t = document.getElementById("table");
+        var time2 = new Date();
+        t.innerHTML = "";
+        t.appendChild(table);
+        //t.innerHTML += '<span>' + (new Date() - time2) + '</span> <span>' + (time2 - time1) +'</span>';
     }
 
     function createRow() {
@@ -335,3 +351,7 @@ removeClass = function (el, className) {
     else
         el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 };
+
+if (isMobile.iOS()) {
+    addClass(fullBtn, "hidden");
+}

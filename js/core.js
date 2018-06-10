@@ -1,9 +1,32 @@
 var body = document.getElementsByTagName("body")[0];
-var table = document.getElementById("table");
-var lvlComplete = document.getElementById("state-lvl_complete");
 var isMouseDown = false;
 var logger = false;
 var lastSelectedCell;
+var lastTouchElement = null;
+
+function showModal() {
+    var number = gameStorage.getNumberCurrentLevel();
+    var color;
+    document.querySelectorAll("[data-level]").forEach(function (item) {
+        if (item.attributes["data-level"].value == number) {
+            color = getComputedStyle(item).color;
+        }
+    });
+    if (!!color) {
+        var completeLevel = document.querySelector(".complete_level");
+        completeLevel.innerHTML = number + 1;
+        completeLevel.style.color = color;
+        var states = new States();
+        states.showState("state-lvl_complete", true);
+    }
+
+}
+
+function hideModal() {
+    var states = new States();
+    states.showState("state-levels");
+}
+
 
 function log(mesage, obj) {
     mesage = mesage === undefined ? "" : mesage;
@@ -11,6 +34,32 @@ function log(mesage, obj) {
         console.log(mesage + ' ' + (obj ? JSON.stringify(obj) : ''));
     }
 }
+
+var isMobile = {
+    Android: function () {
+        return navigator.userAgent.match(/Android/i);
+    },
+    BlackBerry: function () {
+        return navigator.userAgent.match(/BlackBerry/i);
+    },
+    iOS: function () {
+        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+    },
+    Opera: function () {
+        return navigator.userAgent.match(/Opera Mini/i);
+    },
+    Windows: function () {
+        return navigator.userAgent.match(/IEMobile/i);
+    },
+    any: function () {
+        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+    }
+};
+
+function isTouchDevice() {
+    return !!('ontouchstart' in window);
+}
+
 
 function launchFullScreen(element) {
     if (element.requestFullScreen) {
@@ -24,32 +73,56 @@ function launchFullScreen(element) {
     } else if (element.msRequestFullScreen) {
         element.msRequestFullScreen()
     } else {
-        alert("Для елемента " + element.toString() + " недоступен полноэкранный режим")
+        alert("Для вашего устройства не доступен полноэкранный режим")
     }
 }
 
-document.querySelectorAll(".level").forEach(function (v) {
-    v.addEventListener("click", function (v) {
-        launchFullScreen(body);
-    })
-});
+function clearField() {
+    if (screamerCells.haveScreamer()) {
+        screamerCells.hide();
+        screamerCells.clear();
+    }
+    CurrentLevel.GetCurrentState().forEach(function (row) {
+        row.forEach(function (cell) {
+            cell.after = null;
+            cell.before = null;
+            cell.setValue(0);
+        })
+    });
+    rebuildField();
+}
+
 
 function game_Init() {
-    body.addEventListener("mouseup", function () {
+    window.scrollTo(0, (window.innerHeight / 2) - (document.getElementById("table").clientHeight / 2));
+    stateGame.addEventListener("mouseup", function () {
         eUp();
     });
+    stateGame.addEventListener("touchend", function (event) {
+        eUp();
+        lastTouchElement = null;
+    });
+    stateGame.addEventListener("touchstart", function (event) {
+        var element = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+        if (element.classList.contains("value_wrapper")) {
+            eDown(element);
+            lastTouchElement = element;
+        }
+    });
+    stateGame.addEventListener("touchmove", function (event) {
+        var element = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+        if (element !== lastTouchElement &&
+            element.classList.contains("value_wrapper") &&
+            lastTouchElement !== null) {
+            eOver(element);
+            lastTouchElement = element;
+        }
+    }, false);
     document.querySelectorAll(".value_wrapper").forEach(function (el) {
         el.addEventListener("mousedown", function () {
             eDown(el);
         });
-        el.addEventListener("touchstart", function () {
-            eDown(el);
-        });
-
         el.addEventListener("mouseover", function () {
-            eOver(el);
-        });
-        el.addEventListener("touchmove", function () {
             eOver(el);
         });
         el.addEventListener("click", function () {
@@ -57,6 +130,7 @@ function game_Init() {
         });
     });
 }
+
 
 function eUp(el) {
     autoMagnet(lastSelectedCell);
@@ -66,13 +140,17 @@ function eUp(el) {
 }
 
 function eDown(el) {
+    if (screamerCells.haveScreamer()) {
+        screamerCells.hide();
+        screamerCells.clear();
+    }
     var findCell = findCellByElement(el);
-    if (findCell.value !== 0) {
+    if (findCell.value !== 0 && !isCompletedPath(findCell)) {
         isMouseDown = true;
         lastSelectedCell = findCell;
         deleteAfterPath(findCell);
         rebuildField();
-        removeClass(findCell.dom.firstChild, "disabled");
+        // removeClass(findCell.dom.firstChild, "disabled");
     }
 }
 
@@ -120,6 +198,10 @@ function eOver(el) {
 }
 
 function eClick(el) {
+    if (screamerCells.haveScreamer()) {
+        screamerCells.hide();
+        screamerCells.clear();
+    }
     var cell = findCellByElement(el);
     deletePath(cell);
     log("One click");
@@ -156,6 +238,40 @@ function isEndPath(lastCell, currentCell) {
         return false;
     }
 }
+
+var ScreamerCells = function () {
+    this.screamers = [];
+    this.haveScreamer = function () {
+        return this.screamers.length !== 0;
+    };
+    this.clear = function () {
+        this.screamers = [];
+    };
+    this.checked = function () {
+        var screamers = [];
+        CurrentLevel.GetCurrentState().forEach(function (row) {
+            row.forEach(function (cell) {
+                if (cell.value === 0) {
+                    screamers.push(cell);
+                }
+            })
+        });
+        this.screamers = screamers;
+    };
+    this.show = function () {
+        this.screamers.forEach(function (screamer) {
+            removeClass(screamer.dom, "screamer");
+            addClass(screamer.dom, "screamer");
+        });
+    };
+    this.hide = function hideScreamerCell() {
+        this.screamers.forEach(function (screamer) {
+            removeClass(screamer.dom, "screamer");
+        });
+    }
+};
+
+var screamerCells = new ScreamerCells();
 
 function isStartPath(lastCell, currentCell) {
     var step = new StepToPath(lastCell);
@@ -285,20 +401,15 @@ function deleteLocking(cell) {
 }
 
 function rebuildField(withAutoMagnet) {
+    gameStorage.save();
     var notFoundedZeroValue = true;
     var allWayFound = true;
-
-    withAutoMagnet = withAutoMagnet === undefined ? false : withAutoMagnet;
     CurrentLevel.GetCurrentState().forEach(function (row) {
         row.forEach(function (cell) {
-
-            // if (withAutoMagnet) {
-            //     autoMagnet(cell);
-            // }
             if (cell.isPublic) {
-                buildPublicCell(cell)
+                buildPublicCell(cell);
             } else {
-                buildNotPublicCell(cell)
+                // buildNotPublicCell(cell)
             }
 
             if (!cell.isPublic) {
@@ -309,17 +420,23 @@ function rebuildField(withAutoMagnet) {
             if (cell.value === 0) {
                 notFoundedZeroValue = false;
             }
-
-            // deleteLocking(cell);
         })
     });
 
-    if (allWayFound && allWayFound) {
+    if (allWayFound && notFoundedZeroValue) {
+        gameStorage.levelComplete();
         var stateElements = document.querySelectorAll('[id^="state-"]');
         stateElements.forEach(function (el) {
             removeClass(el, "show");
         });
-        addClass(lvlComplete, "show")
+        addClass(document.getElementById("state-game"), "show");
+        addClass(document.getElementById("state-lvl_complete"), "show");
+        showModal();
+    } else if (allWayFound && !notFoundedZeroValue) {
+        screamerCells.checked();
+        if (screamerCells.haveScreamer()) {
+            screamerCells.show()
+        }
     }
 
     function buildPublicCell(cell) {
@@ -386,7 +503,7 @@ function rebuildField(withAutoMagnet) {
 }
 
 function autoMagnet(cell) {
-    if (cell.isPublic) {
+    if (cell !== undefined && cell !== null && cell.isPublic) {
         var neighbors = findNeighbors(cell, true);
         var neighbor;
         var data = CurrentLevel.GetCurrentState();
